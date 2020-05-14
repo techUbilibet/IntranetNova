@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/default.xhtml">
+//	template="/WEB-INF/templates/float.xhtml">
+	<ui:define name="content">
+		<h:outputStylesheet name="css/tab.css" />
+		<h:outputScript library="js" name="tabpane.js" target="body" />
+		<script type="javascript">var tabPane1 = new WebFXTabPane( document.getElementById( "tab-pane-1" ) );</script>
+		<h:form id="reg">
+			<h2>Edició d'usuari</h2>
+			<div class="tab-pane" id="tab-pane-1" style="width: 100%;">
+				<div class="tab-page" style="width: 98%;">
+					<h2 class="tab">Dades</h2>
+					<table>
+						<tr>
+							<td><h:outputLabel for="idv" value="Id:" /></td>
+							<td><h:inputText id="idv" value="#{usuariEd.id}" readonly="true" size="5" />
+								<h:inputHidden id="id" value="#{usuariEd.id}" /></td>
+						</tr>
+						<tr>
+							<td><h:outputLabel for="departament" value="Departament:" /></td>
+							<td><h:inputText id="departament" 
+									value="#{usuariEd.departament.id}" size="5" maxlength="10" 
+									valueChangeListener="#{usuariEdicio.departamentChanged}"
+									onchange="submit()" />
+								<h:inputText id="deptnom"
+									value="#{usuariEd.departament.nom}" size="40" readonly="true" /></td>
+						</tr>
+						<tr>
+							<td><h:outputLabel for="nom" value="Name:" /></td>
+							<td><h:inputText id="nom" value="#{usuariEd.nom}" size="30"
+									maxlength="50" /></td>
+						</tr>
+						<tr>
+							<td><h:outputLabel for="email" value="Email:" /></td>
+							<td><h:inputText id="email" value="#{usuariEd.email}"
+									size="30" maxlength="50" /></td>
+						</tr>
+						<tr>
+							<td><h:outputLabel for="idioma" value="Idioma:" /></td>
+							<td><h:selectOneListbox id="idioma"
+									value="#{usuariEd.idioma}" size="1">
+									<f:selectItem itemValue="0" itemLabel="Català" />
+									<f:selectItem itemValue="1" itemLabel="Castellà" />
+									<f:selectItem itemValue="2" itemLabel="Anglès" />
+								</h:selectOneListbox></td>
+						</tr>
+						<tr>
+							<td><h:outputLabel for="contrasenya" value="Contrasenya:" />
+							</td>
+							<td><h:inputText id="contrasenya"
+									value="#{usuariEd.contrasenya}" size="30" maxlength="50" /></td>
+						</tr>
+						<!--tr>
+							<td></td>
+							<td></td>
+						</tr-->
+					</table>
+				</div>
+				<div class="tab-page" style="width: 98%;">
+					<h2 class="tab">Permisos</h2>
+					<h:dataTable var="_permis" value="#{usuariEd.permisos}"
+						rendered="#{not empty usuariEd.permisos}" styleClass="simpletablestyle">
+						<h:column>
+							<f:facet name="header">Funció</f:facet>
+			                #{_permis.funcio.descripcio}
+						</h:column>
+						<h:column>
+							<f:facet name="header">Nivell</f:facet>
+	    		            #{_permis.nivell}
+	            		</h:column>
+						<h:column>
+							<f:facet name="header">Amb contrasenya</f:facet>
+			                #{_permis.contrasenya}
+	    		        </h:column>
+	    		        <!--h:column>
+	    		        	<f:facet name="header">Eliminar</f:facet>
+	    		        	<h:selectBooleanCheckbox value="#{_permis.delete}" />   
+	    		        </h:column-->
+					</h:dataTable>
+					<h:panelGrid columns="2">
+						<h:outputLabel for="addPermis" value="Nou permís:" />
+						<h:selectOneListbox id="addPermis" value="#{novaFuncio}" 
+								size="1" 
+								valueChangeListener="#{usuariEdicio.nouPermis}" 
+								onchange="submit()">
+							<f:selectItems  value="#{llistaFuncions}" />
+						</h:selectOneListbox>
+					</h:panelGrid>
+				</div>
+			</div>
+			<p>
+				<h:panelGrid columns="2">
+					<h:commandButton id="save" action="#{usuariEdicio.save}"
+						value="Desar" />
+					<h:button id="cancel" outcome="usuarisView.jsf"
+						 value="Sortir" />
+					<h:messages styleClass="messages" errorClass="invalid"
+						infoClass="valid" warnClass="warning" globalOnly="true" />
+				</h:panelGrid>
+			</p>
+		</h:form>
+	</ui:define>
+</ui:composition>

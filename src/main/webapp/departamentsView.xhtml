@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    template="/WEB-INF/templates/default.xhtml">
+    <ui:define name="content">
+	    <div>
+	        <h2>Departaments</h2>
+	        <!--h:panelGroup rendered="#{empty usuaris}">
+	            <em>Sense usuaris.</em>
+	        </h:panelGroup-->
+            <h:panelGrid columns="2">
+               <!--h:button outcome="departamentEditView.jsf" value="Nou departament" styleClass="register" /-->
+               <h:button outcome="index.jsf" value="Sortir" styleClass="register" />
+            </h:panelGrid>
+	        <h:dataTable var="_departament" value="#{departaments}"
+	            rendered="#{not empty departaments}"
+	            styleClass="simpletablestyle">
+	            <h:column>
+	                <f:facet name="header">Id</f:facet>
+	                <!--h:link value="#{_departament.id}" outcome="departamentEditView.jsf" >
+	                	<f:param name="id" value="#{_departament.id}" />
+	                </h:link-->
+	                #{_departament.id}
+	            </h:column>
+	            <h:column>
+	                <f:facet name="header">Nom</f:facet>
+	                #{_departament.nom}
+	            </h:column>
+	        </h:dataTable>
+		</div>
+    </ui:define>
+</ui:composition>

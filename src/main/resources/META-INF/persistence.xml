@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://xmlns.jcp.org/xml/ns/persistence
+        http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="Intranet20">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<jta-data-source>java:/UbilibetDS</jta-data-source>
+		<class>org.intra.integracio.ContacteAdminTec</class>
+		<class>org.intra.integracio.ContacteFac</class>
+		<class>org.intra.integracio.ContacteFacAutoritzat</class>
+		<class>org.intra.integracio.ContacteFacDepartament</class>
+		<class>org.intra.integracio.ContacteFacDepartamentPK</class>
+		<class>org.intra.integracio.Pais</class>
+		<class>org.intra.integracio.Departament</class>
+		<class>org.intra.integracio.Descompte</class>
+		<class>org.intra.integracio.DescomptePK</class>
+		<class>org.intra.integracio.DescompteFamilia</class>
+		<class>org.intra.integracio.DescompteFamiliaPK</class>
+		<class>org.intra.integracio.Divisa</class>
+		<class>org.intra.integracio.Dns</class>
+		<class>org.intra.integracio.Familia</class>
+		<class>org.intra.integracio.Funcio</class>
+		<class>org.intra.integracio.Grup</class>
+		<class>org.intra.integracio.PermisDepartament</class>
+		<class>org.intra.integracio.PermisDepartamentPK</class>
+		<class>org.intra.integracio.PermisUsuari</class>
+		<class>org.intra.integracio.PermisUsuariPK</class>
+		<class>org.intra.integracio.PlantillaCertificat</class>
+		<class>org.intra.integracio.PlantillaDomini</class>
+		<class>org.intra.integracio.PlantillaMark</class>
+		<class>org.intra.integracio.Sector</class>
+		<class>org.intra.integracio.Tarifa</class>
+		<class>org.intra.integracio.Titular</class>
+		<class>org.intra.integracio.Usuari</class>
+		<properties>
+			<property name="hibernate.dialect"
+				value="org.hibernate.dialect.PostgreSQL94Dialect" />
+			<property name="hibernate.show_sql" value="false" />
+		</properties>
+	</persistence-unit>
+</persistence>

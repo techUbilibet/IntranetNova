@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    template="/WEB-INF/templates/default.xhtml">
+    <ui:define name="content">
+	    <div>
+	        <h2>Usuaris</h2>
+	        <!--h:panelGroup rendered="#{empty usuaris}">
+	            <em>Sense usuaris.</em>
+	        </h:panelGroup-->
+            <h:panelGrid columns="2">
+               <h:button outcome="usuariEditView.jsf" value="Nou usuari" styleClass="register" >
+	                	<f:param name="id" value="0" />
+               </h:button>
+               <h:button outcome="index.jsf" value="Sortir" styleClass="register" />
+            	<!--;-->
+            </h:panelGrid>
+	        <h:dataTable var="_usuari" value="#{usuaris}"
+	            rendered="#{not empty usuaris}"
+	            styleClass="simpletablestyle">
+	            <h:column>
+	                <f:facet name="header">Id</f:facet>
+	                <h:link value="#{_usuari.id}" outcome="usuariEditView.jsf" >
+	                	<f:param name="id" value="#{_usuari.id}" />
+	                </h:link>
+	            </h:column>
+	            <h:column>
+	                <f:facet name="header">Nom</f:facet>
+	                #{_usuari.nom}
+	            </h:column>
+	            <h:column>
+	                <f:facet name="header">Departament</f:facet>
+	                #{_usuari.departament.nom}
+	            </h:column>
+	            <h:column>
+	                <f:facet name="header">Email</f:facet>
+	                #{_usuari.email}
+	            </h:column>
+	        </h:dataTable>
+		</div>
+    </ui:define>
+</ui:composition>

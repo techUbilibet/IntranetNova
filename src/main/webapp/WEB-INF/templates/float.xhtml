@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+    <title>Ubilibet Intranet 2.0</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <h:outputStylesheet name="css/screen.css" />
+</h:head>
+<h:body>
+    <div id="container">
+    	<img src="resources/gfx/ubilibet.png" class="logo" />
+    	<h1>Ubilibet Intranet 2.0</h1>
+    	<h:form>
+            <h:panelGrid columns="2">
+				<h:outputLabel for="username">usuari:</h:outputLabel>
+				<h:inputText id="nouser" value="#{login.usuari.nom}"  rendered="#{login.loggedIn}" readonly="true" />
+				<h:inputText id="username" value="Ningú"  rendered="#{!login.loggedIn}" readonly="true" />
+			</h:panelGrid>
+    	</h:form>
+        <div id="content">
+            <ui:insert name="content">
+                    [Template content will be inserted here]
+         </ui:insert>
+        </div>
+    </div>
+</h:body>
+</html>
