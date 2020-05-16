@@ -17,8 +17,6 @@
 package org.intra.negoci;
 
 import javax.ejb.Stateful;
-//import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -28,16 +26,15 @@ import javax.persistence.TypedQuery;
 
 import org.intra.integracio.Departament;
 import org.intra.integracio.Funcio;
+import org.intra.integracio.PermisUsuari;
 import org.intra.integracio.Usuari;
-
-import javax.persistence.EntityNotFoundException;
+import org.intra.util.EdicioPermis;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 @Stateful
-//@ApplicationScoped
 public class Seguretat {
 
     @Inject
@@ -47,8 +44,14 @@ public class Seguretat {
     @PersistenceContext(type = PersistenceContextType.EXTENDED)
     private EntityManager em;
 
-    public Usuari getUsuariById(int i) {
-		Usuari u=em.find(Usuari.class, i);
+    public Usuari getUsuariById(int id) {
+    	return getUsuariById(id, false);
+    }
+    
+   	public Usuari getUsuariById(Integer id, boolean b) {
+		Usuari u=em.find(Usuari.class, id);
+    	TypedQuery<PermisUsuari> query= em.createNamedQuery("PermisUsuari.findByUsuari", PermisUsuari.class);
+		List<PermisUsuari> permisos=query.setParameter("usuari", u).getResultList();
         return u;
     }
 
@@ -85,33 +88,6 @@ public class Seguretat {
     	return list;
 	}
     
-//    @Inject
-//    private Event<Usuari> usuariEventSrc;
-
-    public void save(Usuari usuari) throws Exception {
-//        log.info(usuari.toString());
-//        log.info("Registering " + usuari.getNom());
-//        Usuari desat;
-//        if (usuari.getId()!=null && usuari.getId()!=0) {
-//        	desat=em.find(Usuari.class, usuari.getId());
-//        	if (desat==null) throw new EntityNotFoundException("Usuari:"+usuari.getId().toString()); 
-//        	setUsuariData(desat, usuari);
-//        	em.flush();
-//        } else
-//        	desat=new Usuari();
-//        	setUsuariData(desat, usuari);
-//        	em.persist(desat);
-    }
-
-
-//	private void setUsuariData(Usuari desat, Usuari usuari) {
-//		desat.setContrasenya(usuari.getContrasenya());
-//		Departament d=em.find(Departament.class, usuari.getDepartament().getId());
-//		desat.setDepartament(d);
-//		desat.setEmail(usuari.getEmail());
-//		desat.setIdioma(usuari.getIdioma());
-//		desat.setNom(usuari.getNom());
-//	}
 
 	public List<Funcio> listFunctions() {
 		TypedQuery<Funcio> query= em.createNamedQuery("Funcio.findAll", Funcio.class);
@@ -130,5 +106,54 @@ public class Seguretat {
         return null;
 	}
 
+	public Integer saveUsuari(Integer id, String nom, String email, Integer idioma, Boolean certificat,
+			String contrasenya, Integer idDepartament, List<EdicioPermis> permisos) {
+		Usuari usuari;
+		if (id!=null && id!=0) {
+			log.info("Desant usuari "+id.toString()+" "+nom);
+			usuari=getUsuariById(id, true);
+			
+		} else {
+			log.info("Desant nou usuari "+nom);
+			usuari=new Usuari();
+			usuari.setPermisos(new ArrayList<PermisUsuari>());
+		}
+		usuari.setCertificat(certificat);
+		usuari.setContrasenya(contrasenya);
+		Departament departament=getDepartamentById(idDepartament);
+		usuari.setDepartament(departament);
+		usuari.setEmail(email);
+		usuari.setIdioma(idioma);
+		usuari.setNom(nom);
+
+		for (EdicioPermis e:permisos) {
+			for (PermisUsuari p:usuari.getPermisos()) {
+				if (e.getIdFuncio().equals(p.getFuncio().getId())) {
+					if (e.isDelete()) {
+						usuari.removePermisos(p);
+					} else {
+						p.setNivell(e.getNivell().ordinal());
+						p.setContrasenya(e.getContrasenya());
+					}
+					e.setIdFuncio(null);
+					break;
+				}
+			}
+			if (e.getIdFuncio()!=null) {
+				PermisUsuari nou=new PermisUsuari();
+				Funcio funcio=getFuncioById(e.getIdFuncio());
+				nou.setContrasenya(e.getContrasenya());
+				nou.setFuncio(funcio);
+				nou.setNivell(e.getNivell().ordinal());
+				usuari.addPermisos(nou);
+			}
+		}
+		if (usuari.getId()==null) {
+			em.persist(usuari);
+		} else {
+			em.flush();
+		}
+		return usuari.getId();
+	}
 
 }

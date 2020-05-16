@@ -16,33 +16,36 @@
 					<h2 class="tab">Dades</h2>
 					<table>
 						<tr>
-							<td><h:outputLabel for="idv" value="Id:" /></td>
-							<td><h:inputText id="idv" value="#{usuariEd.id}" readonly="true" size="5" />
-								<h:inputHidden id="id" value="#{usuariEd.id}" /></td>
+							<td><h:outputLabel for="id" value="Id:" /></td>
+							<td><h:inputText id="id" value="#{id}" readonly="true" size="5" /></td>
 						</tr>
 						<tr>
-							<td><h:outputLabel for="departament" value="Departament:" /></td>
-							<td><h:inputText id="departament" 
-									value="#{usuariEd.departament.id}" size="5" maxlength="10" 
+							<td><h:outputLabel for="idDepartament" value="Departament:" /></td>
+							<td><h:inputText id="idDepartament" 
+									value="#{idDepartament}" size="5" maxlength="10" 
 									valueChangeListener="#{usuariEdicio.departamentChanged}"
 									onchange="submit()" />
-								<h:inputText id="deptnom"
-									value="#{usuariEd.departament.nom}" size="40" readonly="true" /></td>
+								<h:inputText id="nomDepartament"
+									value="#{nomDepartament}" size="40" readonly="true" /></td>
 						</tr>
 						<tr>
 							<td><h:outputLabel for="nom" value="Name:" /></td>
-							<td><h:inputText id="nom" value="#{usuariEd.nom}" size="30"
+							<td><h:inputText id="nom" value="#{nom}" size="30"
 									maxlength="50" /></td>
 						</tr>
 						<tr>
 							<td><h:outputLabel for="email" value="Email:" /></td>
-							<td><h:inputText id="email" value="#{usuariEd.email}"
+							<td><h:inputText id="email" value="#{email}"
 									size="30" maxlength="50" /></td>
+						</tr>
+						<tr>
+							<td><h:outputLabel for="certificat" value="Identificació amb certificat:" /></td>
+							<td><h:selectBooleanCheckbox value="#{certificat}" /></td>
 						</tr>
 						<tr>
 							<td><h:outputLabel for="idioma" value="Idioma:" /></td>
 							<td><h:selectOneListbox id="idioma"
-									value="#{usuariEd.idioma}" size="1">
+									value="#{idioma}" size="1">
 									<f:selectItem itemValue="0" itemLabel="Català" />
 									<f:selectItem itemValue="1" itemLabel="Castellà" />
 									<f:selectItem itemValue="2" itemLabel="Anglès" />
@@ -52,7 +55,7 @@
 							<td><h:outputLabel for="contrasenya" value="Contrasenya:" />
 							</td>
 							<td><h:inputText id="contrasenya"
-									value="#{usuariEd.contrasenya}" size="30" maxlength="50" /></td>
+									value="#{contrasenya}" size="30" maxlength="50" /></td>
 						</tr>
 						<!--tr>
 							<td></td>
@@ -62,11 +65,11 @@
 				</div>
 				<div class="tab-page" style="width: 98%;">
 					<h2 class="tab">Permisos</h2>
-					<h:dataTable var="_permis" value="#{usuariEd.permisos}"
-						rendered="#{not empty usuariEd.permisos}" styleClass="simpletablestyle">
+					<h:dataTable var="_permis" value="#{permisos}"
+						rendered="#{not empty permisos}" styleClass="simpletablestyle">
 						<h:column>
 							<f:facet name="header">Funció</f:facet>
-			                #{_permis.funcio.descripcio}
+			                #{_permis.descripcioFuncio}
 						</h:column>
 						<h:column>
 							<f:facet name="header">Nivell</f:facet>
@@ -76,10 +79,10 @@
 							<f:facet name="header">Amb contrasenya</f:facet>
 			                #{_permis.contrasenya}
 	    		        </h:column>
-	    		        <!--h:column>
+	    		        <h:column>
 	    		        	<f:facet name="header">Eliminar</f:facet>
 	    		        	<h:selectBooleanCheckbox value="#{_permis.delete}" />   
-	    		        </h:column-->
+	    		        </h:column>
 					</h:dataTable>
 					<h:panelGrid columns="2">
 						<h:outputLabel for="addPermis" value="Nou permís:" />
