@@ -3,8 +3,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	template="/WEB-INF/templates/default.xhtml">
-//	template="/WEB-INF/templates/float.xhtml">
+	template="/WEB-INF/templates/float.xhtml">
 	<ui:define name="content">
 		<h:outputStylesheet name="css/tab.css" />
 		<h:outputScript library="js" name="tabpane.js" target="body" />
@@ -21,31 +20,37 @@
 						</tr>
 						<tr>
 							<td><h:outputLabel for="idDepartament" value="Departament:" /></td>
-							<td><h:inputText id="idDepartament" 
-									value="#{idDepartament}" size="5" maxlength="10" 
+							<td><h:inputText id="idDepartament" value="#{idDepartament}" size="5" maxlength="10" 
 									valueChangeListener="#{usuariEdicio.departamentChanged}"
-									onchange="submit()" />
-								<h:inputText id="nomDepartament"
-									value="#{nomDepartament}" size="40" readonly="true" /></td>
+									onchange="submit()" >
+									<f:convertNumber integerOnly="true" />
+									</h:inputText>
+								<h:inputText id="nomDepartament" value="#{nomDepartament}" size="40" readonly="true" /></td>
 						</tr>
 						<tr>
 							<td><h:outputLabel for="nom" value="Name:" /></td>
-							<td><h:inputText id="nom" value="#{nom}" size="30"
-									maxlength="50" /></td>
+							<td><h:inputText id="nom" value="#{nom}" size="30" maxlength="50" 
+									valueChangeListener="#{usuariEdicio.nomChanged}"
+									onchange="submit()" />
+							</td>
 						</tr>
 						<tr>
 							<td><h:outputLabel for="email" value="Email:" /></td>
-							<td><h:inputText id="email" value="#{email}"
-									size="30" maxlength="50" /></td>
+							<td><h:inputText id="email" value="#{email}" size="30" maxlength="50"  
+									valueChangeListener="#{usuariEdicio.emailChanged}"
+									onchange="submit()" /></td>
 						</tr>
 						<tr>
 							<td><h:outputLabel for="certificat" value="Identificació amb certificat:" /></td>
-							<td><h:selectBooleanCheckbox value="#{certificat}" /></td>
+							<td><h:selectBooleanCheckbox value="#{certificat}"  
+									valueChangeListener="#{usuariEdicio.certificatChanged}"
+									onchange="submit()" /></td>
 						</tr>
 						<tr>
 							<td><h:outputLabel for="idioma" value="Idioma:" /></td>
-							<td><h:selectOneListbox id="idioma"
-									value="#{idioma}" size="1">
+							<td><h:selectOneListbox id="idioma" value="#{idioma}" size="1" 
+									valueChangeListener="#{usuariEdicio.idiomaChanged}"
+									onchange="submit()" >
 									<f:selectItem itemValue="0" itemLabel="Català" />
 									<f:selectItem itemValue="1" itemLabel="Castellà" />
 									<f:selectItem itemValue="2" itemLabel="Anglès" />
@@ -54,8 +59,9 @@
 						<tr>
 							<td><h:outputLabel for="contrasenya" value="Contrasenya:" />
 							</td>
-							<td><h:inputText id="contrasenya"
-									value="#{contrasenya}" size="30" maxlength="50" /></td>
+							<td><h:inputText id="contrasenya" value="#{contrasenya}" size="30" maxlength="50"  
+									valueChangeListener="#{usuariEdicio.contrasenyaChanged}"
+									onchange="submit()" /></td>
 						</tr>
 						<!--tr>
 							<td></td>
@@ -97,9 +103,9 @@
 			</div>
 			<p>
 				<h:panelGrid columns="2">
-					<h:commandButton id="save" action="#{usuariEdicio.save}"
+					<h:commandButton type="submit" id="save" action="#{usuariEdicio.save}"
 						value="Desar" />
-					<h:button id="cancel" outcome="usuarisView.jsf"
+					<h:button id="cancel" onclick="window.close();"
 						 value="Sortir" />
 					<h:messages styleClass="messages" errorClass="invalid"
 						infoClass="valid" warnClass="warning" globalOnly="true" />

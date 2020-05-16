@@ -1,12 +1,14 @@
 package org.intra.mbean.seguretat;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -26,6 +28,7 @@ import org.intra.util.NivellPermis;
 
 @Named
 @ViewScoped
+//@SessionScoped
 public class UsuariEdicio  implements Serializable  {
 
 	private static final long serialVersionUID = 1L;
@@ -101,13 +104,13 @@ public class UsuariEdicio  implements Serializable  {
         	this.id=new Integer(params.get("id"));
         	log.info("Editant usuari id="+id.toString());
         	Usuari u=seguretat.getUsuariById(id, true); 
-        	this.nom=u.getNom();
-        	this.idioma=u.getIdioma();
-        	this.email=u.getEmail();
-        	this.certificat=u.getCertificat();
-        	this.contrasenya=u.getContrasenya();
-        	this.idDepartament=u.getDepartament().getId();
-        	this.nomDepartament=u.getDepartament().getNom();
+        	nom=u.getNom();
+        	idioma=u.getIdioma();
+        	email=u.getEmail();
+        	certificat=u.getCertificat();
+        	contrasenya=u.getContrasenya();
+        	idDepartament=u.getDepartament().getId();
+        	nomDepartament=u.getDepartament().getNom();
         	for (PermisUsuari p:u.getPermisos()) {
         		EdicioPermis nou=new EdicioPermis();
         		nou.setContrasenya(p.getContrasenya());
@@ -150,16 +153,38 @@ public class UsuariEdicio  implements Serializable  {
 		log.info("new " + idChanged.getNewValue().toString());
 		if (idChanged.getOldValue()!=null)
 			log.info("old " + idChanged.getOldValue().toString());
-		Departament d=seguretat.getDepartamentById(Integer.parseInt((String) idChanged.getNewValue()));
+		Departament d=seguretat.getDepartamentById(((BigDecimal) idChanged.getNewValue()).intValue());
 		
 		if (d==null) {
-			d=seguretat.getDepartamentById((Integer) idChanged.getOldValue());
         	FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Departament incorrecte, No es podran desar les dades fins que s'assigni un de correcte", "Departament incorrecte");
         	context.addMessage(null, m);
+        	if (idChanged.getOldValue()!=null)
+        		d=seguretat.getDepartamentById((Integer) idChanged.getOldValue());
 		}
-		this.idDepartament=d==null?null:d.getId();
-		this.nomDepartament=d==null?null:d.getNom();
-			
+		if (d!=null) {
+			this.idDepartament=d==null?null:d.getId();
+			this.nomDepartament=d==null?null:d.getNom();
+		}
+	}
+
+	public void nomChanged(ValueChangeEvent nomChanged) {
+		nom=(String) nomChanged.getNewValue();
+	}
+
+	public void emailChanged(ValueChangeEvent emailChanged) {
+		email=(String) emailChanged.getNewValue();
+	}
+
+	public void contrasenyaChanged(ValueChangeEvent contrasenyaChanged) {
+		contrasenya=(String) contrasenyaChanged.getNewValue();
+	}
+
+	public void idiomaChanged(ValueChangeEvent idiomaChanged) {
+		idioma=Integer.parseInt((String) idiomaChanged.getNewValue());
+	}
+
+	public void certificatChanged(ValueChangeEvent certificatChanged) {
+		certificat=(Boolean) certificatChanged.getNewValue();
 	}
 
 	public void nouPermis(ValueChangeEvent nouPermis) {
@@ -185,8 +210,15 @@ public class UsuariEdicio  implements Serializable  {
 	
     public void save() throws Exception {
         try {
-//        	edUsuari.setDepartament(deptUs);
+        	
         	log.info("Destant Usuari");
+        	log.info("id "+id);
+        	log.info("nom "+nom);
+        	log.info("email "+email);
+        	log.info("idioma "+idioma);
+        	log.info("certificat "+certificat);
+        	log.info("contrasenya "+contrasenya);
+        	log.info("idDepartament "+idDepartament);
         	id=seguretat.saveUsuari(id,nom,email, idioma, certificat, contrasenya, idDepartament, permisos);
         	FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, "desat amb id "+id.toString(), "Registration successful");
         	context.addMessage(null, m);

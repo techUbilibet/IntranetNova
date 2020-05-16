@@ -11,7 +11,7 @@
 	            <em>Sense usuaris.</em>
 	        </h:panelGroup-->
             <h:panelGrid columns="2">
-               <h:button outcome="usuariEditView.jsf" value="Nou usuari" styleClass="register" />
+               <h:button onclick="UsuariEditor()" value="Nou usuari" styleClass="register" />
                <h:button outcome="index.jsf" value="Sortir" styleClass="register" />
             	<!--;-->
             </h:panelGrid>
@@ -20,9 +20,10 @@
 	            styleClass="simpletablestyle">
 	            <h:column>
 	                <f:facet name="header">Id</f:facet>
-	                <h:link value="#{_usuari.id}" outcome="usuariEditView.jsf" >
+	                <!--h:link value="#{_usuari.id}" outcome="usuariEditView.jsf" >
 	                	<f:param name="id" value="#{_usuari.id}" />
-	                </h:link>
+	                </h:link-->
+	                <h:link value="#{_usuari.id}" onclick="UsuariEditor(#{_usuari.id})" />
 	            </h:column>
 	            <h:column>
 	                <f:facet name="header">Nom</f:facet>
