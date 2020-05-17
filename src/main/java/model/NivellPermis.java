@@ -1,4 +1,4 @@
-package org.intra.util;
+package model;
 
 public enum NivellPermis {
 	VEURE_LIMITAT,		// Sol pot veure a excepció d'aquelles dades que es considerin sensibles

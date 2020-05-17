@@ -30,6 +30,8 @@ import org.intra.integracio.PermisUsuari;
 import org.intra.integracio.Usuari;
 import org.intra.util.EdicioPermis;
 
+import model.UsuariMD;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -106,54 +108,55 @@ public class Seguretat {
         return null;
 	}
 
-	public Integer saveUsuari(Integer id, String nom, String email, Integer idioma, Boolean certificat,
-			String contrasenya, Integer idDepartament, List<EdicioPermis> permisos) {
+	public UsuariMD saveUsuari(UsuariMD ori) {
 		Usuari usuari;
-		if (id!=null && id!=0) {
-			log.info("Desant usuari "+id.toString()+" "+nom);
-			usuari=getUsuariById(id, true);
+		if (ori.getId()!=null && ori.getId()!=0) {
+			log.info("Desant usuari "+ori.getId().toString()+" "+ori.getNom());
+			usuari=getUsuariById(ori.getId(), true);
 			
 		} else {
-			log.info("Desant nou usuari "+nom);
+			log.info("Desant nou usuari "+ori.getNom());
 			usuari=new Usuari();
 			usuari.setPermisos(new ArrayList<PermisUsuari>());
 		}
-		usuari.setCertificat(certificat);
-		usuari.setContrasenya(contrasenya);
-		Departament departament=getDepartamentById(idDepartament);
+		usuari.setNom(ori.getNom());
+		usuari.setEmail(ori.getEmail());
+		usuari.setIdioma(ori.getIdioma());
+		usuari.setCertificat(ori.getCertificat());
+		usuari.setContrasenya(ori.getContrasenya());
+		
+		Departament departament=getDepartamentById(ori.getDepartament().getId());
 		usuari.setDepartament(departament);
-		usuari.setEmail(email);
-		usuari.setIdioma(idioma);
-		usuari.setNom(nom);
+		
 
-		for (EdicioPermis e:permisos) {
-			for (PermisUsuari p:usuari.getPermisos()) {
-				if (e.getIdFuncio().equals(p.getFuncio().getId())) {
-					if (e.isDelete()) {
-						usuari.removePermisos(p);
-					} else {
-						p.setNivell(e.getNivell().ordinal());
-						p.setContrasenya(e.getContrasenya());
-					}
-					e.setIdFuncio(null);
-					break;
-				}
-			}
-			if (e.getIdFuncio()!=null) {
-				PermisUsuari nou=new PermisUsuari();
-				Funcio funcio=getFuncioById(e.getIdFuncio());
-				nou.setContrasenya(e.getContrasenya());
-				nou.setFuncio(funcio);
-				nou.setNivell(e.getNivell().ordinal());
-				usuari.addPermisos(nou);
-			}
-		}
+//		for (EdicioPermis e:permisos) {
+//			for (PermisUsuari p:usuari.getPermisos()) {
+//				if (e.getIdFuncio().equals(p.getFuncio().getId())) {
+//					if (e.isDelete()) {
+//						usuari.removePermisos(p);
+//					} else {
+//						p.setNivell(e.getNivell().ordinal());
+//						p.setContrasenya(e.getContrasenya());
+//					}
+//					e.setIdFuncio(null);
+//					break;
+//				}
+//			}
+//			if (e.getIdFuncio()!=null) {
+//				PermisUsuari nou=new PermisUsuari();
+//				Funcio funcio=getFuncioById(e.getIdFuncio());
+//				nou.setContrasenya(e.getContrasenya());
+//				nou.setFuncio(funcio);
+//				nou.setNivell(e.getNivell().ordinal());
+//				usuari.addPermisos(nou);
+//			}
+//		}
+		
 		if (usuari.getId()==null) {
 			em.persist(usuari);
 		} else {
 			em.flush();
 		}
-		return usuari.getId();
+		return new UsuariMD(usuari);
 	}
-
 }

@@ -2,6 +2,8 @@ package org.intra.util;
 
 import javax.inject.Named;
 
+import model.NivellPermis;
+
 //@Named
 public class EdicioPermis {
 	

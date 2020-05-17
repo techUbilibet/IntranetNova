@@ -12,5 +12,5 @@ function UsuariEditor(id) {
 	var param="";
 	if (id!=undefined)
 		param="?id="+id;
-	ObrirFinestra("usuariEditView.jsf"+param,800,600);
+	ObrirFinestra("usuariEditView.jsf"+param,850,650);
 }

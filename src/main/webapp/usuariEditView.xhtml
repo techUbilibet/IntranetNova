@@ -11,46 +11,38 @@
 		<h:form id="reg">
 			<h2>Edició d'usuari</h2>
 			<div class="tab-pane" id="tab-pane-1" style="width: 100%;">
-				<div class="tab-page" style="width: 98%;">
+				<div class="tab-page" style="width: 94%;">
 					<h2 class="tab">Dades</h2>
 					<table>
 						<tr>
 							<td><h:outputLabel for="id" value="Id:" /></td>
-							<td><h:inputText id="id" value="#{id}" readonly="true" size="5" /></td>
+							<td><h:inputText id="id" value="#{usuari.id}" readonly="true" size="5" tabindex="-1" /></td>
 						</tr>
 						<tr>
 							<td><h:outputLabel for="idDepartament" value="Departament:" /></td>
-							<td><h:inputText id="idDepartament" value="#{idDepartament}" size="5" maxlength="10" 
+							<td><h:inputText id="idDepartament" value="#{usuari.departament.id}" size="5" maxlength="10" 
 									valueChangeListener="#{usuariEdicio.departamentChanged}"
 									onchange="submit()" >
 									<f:convertNumber integerOnly="true" />
 									</h:inputText>
-								<h:inputText id="nomDepartament" value="#{nomDepartament}" size="40" readonly="true" /></td>
+								<h:inputText id="nomDepartament" value="#{usuari.departament.nom}" size="40" readonly="true" tabindex="-1" /></td>
 						</tr>
 						<tr>
 							<td><h:outputLabel for="nom" value="Name:" /></td>
-							<td><h:inputText id="nom" value="#{nom}" size="30" maxlength="50" 
-									valueChangeListener="#{usuariEdicio.nomChanged}"
-									onchange="submit()" />
+							<td><h:inputText id="nom" value="#{usuari.nom}" size="30" maxlength="50" />
 							</td>
 						</tr>
 						<tr>
 							<td><h:outputLabel for="email" value="Email:" /></td>
-							<td><h:inputText id="email" value="#{email}" size="30" maxlength="50"  
-									valueChangeListener="#{usuariEdicio.emailChanged}"
-									onchange="submit()" /></td>
+							<td><h:inputText id="email" value="#{usuari.email}" size="30" maxlength="50" /></td>
 						</tr>
 						<tr>
 							<td><h:outputLabel for="certificat" value="Identificació amb certificat:" /></td>
-							<td><h:selectBooleanCheckbox value="#{certificat}"  
-									valueChangeListener="#{usuariEdicio.certificatChanged}"
-									onchange="submit()" /></td>
+							<td><h:selectBooleanCheckbox value="#{usuari.certificat}" /></td>
 						</tr>
 						<tr>
 							<td><h:outputLabel for="idioma" value="Idioma:" /></td>
-							<td><h:selectOneListbox id="idioma" value="#{idioma}" size="1" 
-									valueChangeListener="#{usuariEdicio.idiomaChanged}"
-									onchange="submit()" >
+							<td><h:selectOneListbox id="idioma" value="#{usuari.idioma}" size="1" tabindex="0" >
 									<f:selectItem itemValue="0" itemLabel="Català" />
 									<f:selectItem itemValue="1" itemLabel="Castellà" />
 									<f:selectItem itemValue="2" itemLabel="Anglès" />
@@ -59,17 +51,11 @@
 						<tr>
 							<td><h:outputLabel for="contrasenya" value="Contrasenya:" />
 							</td>
-							<td><h:inputText id="contrasenya" value="#{contrasenya}" size="30" maxlength="50"  
-									valueChangeListener="#{usuariEdicio.contrasenyaChanged}"
-									onchange="submit()" /></td>
+							<td><h:inputText id="contrasenya" value="#{usuari.contrasenya}" size="30" maxlength="50" /></td>
 						</tr>
-						<!--tr>
-							<td></td>
-							<td></td>
-						</tr-->
 					</table>
 				</div>
-				<div class="tab-page" style="width: 98%;">
+				<div class="tab-page" style="width: 94%;">
 					<h2 class="tab">Permisos</h2>
 					<h:dataTable var="_permis" value="#{permisos}"
 						rendered="#{not empty permisos}" styleClass="simpletablestyle">
@@ -103,8 +89,7 @@
 			</div>
 			<p>
 				<h:panelGrid columns="2">
-					<h:commandButton type="submit" id="save" action="#{usuariEdicio.save}"
-						value="Desar" />
+					<h:commandButton action="#{usuariEdicio.save}" value="Desar" />
 					<h:button id="cancel" onclick="window.close();"
 						 value="Sortir" />
 					<h:messages styleClass="messages" errorClass="invalid"
