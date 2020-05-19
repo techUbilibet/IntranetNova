@@ -1,7 +1,11 @@
-package model;
+package org.intra.model;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.enterprise.inject.Model;
 
+import org.intra.integracio.PermisUsuari;
 import org.intra.integracio.Usuari;
 
 @Model
@@ -14,9 +18,12 @@ public class UsuariMD {
 	private Boolean certificat;
 	private String contrasenya;
 	private DepartamentMD departament;
+	
+	private List<PermisMD> permisos; 
 
 	public UsuariMD() {
 		departament=new DepartamentMD();
+		permisos=new ArrayList<PermisMD>();
 	}
 
 	public UsuariMD(Usuari ori) {
@@ -27,6 +34,10 @@ public class UsuariMD {
     	certificat=ori.getCertificat();
     	contrasenya=ori.getContrasenya();
     	departament=new DepartamentMD(ori.getDepartament()); 
+    	permisos=new ArrayList<PermisMD>();
+    	for (PermisUsuari permis:ori.getPermisos()) {
+    		permisos.add(new PermisMD(permis));
+    	}
 	}
 
 	public Integer getId() {
@@ -83,6 +94,19 @@ public class UsuariMD {
 
 	public void setDepartament(DepartamentMD departament) {
 		this.departament = departament;
+	}
+
+	public List<PermisMD> getPermisos() {
+		return permisos;
+	}
+
+	public void setPermisos(List<PermisMD> permisos) {
+		this.permisos = permisos;
+	}
+
+	public PermisMD addPermis(PermisMD permis) {
+		permisos.add(permis);
+		return permis;
 	}
 
 }

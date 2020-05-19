@@ -9,10 +9,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.intra.integracio.Usuari;
+import org.intra.model.Credencials;
 import org.intra.negoci.Seguretat;
 import org.intra.util.LoggedIn;
-
-import model.Credencials;
 
 @Named
 @SessionScoped

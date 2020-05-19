@@ -77,4 +77,13 @@ public class PermisUsuari implements Serializable {
 		this.usuari = usuari;
 	}
 
+	@PrePersist
+	public void prePersist() {
+		if (id==null) {
+			id=new PermisUsuariPK();
+			id.setIdFuncio(funcio.getId());
+			id.setIdUsuari(usuari.getId());
+		}
+	}
+	
 }

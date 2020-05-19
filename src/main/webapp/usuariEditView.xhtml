@@ -57,19 +57,21 @@
 				</div>
 				<div class="tab-page" style="width: 94%;">
 					<h2 class="tab">Permisos</h2>
-					<h:dataTable var="_permis" value="#{permisos}"
-						rendered="#{not empty permisos}" styleClass="simpletablestyle">
+					<h:dataTable var="_permis" value="#{usuari.permisos}"
+						rendered="#{not empty usuari.permisos}" styleClass="simpletablestyle">
 						<h:column>
 							<f:facet name="header">Funció</f:facet>
-			                #{_permis.descripcioFuncio}
+			                #{_permis.funcio.descripcio}
 						</h:column>
 						<h:column>
 							<f:facet name="header">Nivell</f:facet>
-	    		            #{_permis.nivell}
+							<h:selectOneListbox id="nivell" value="#{_permis.nivell}" size="1" tabindex="0" >
+							<f:selectItems  value="#{llistaNivells}" />
+								</h:selectOneListbox>
 	            		</h:column>
 						<h:column>
 							<f:facet name="header">Amb contrasenya</f:facet>
-			                #{_permis.contrasenya}
+			                <h:selectBooleanCheckbox value="#{_permis.contrasenya}" />
 	    		        </h:column>
 	    		        <h:column>
 	    		        	<f:facet name="header">Eliminar</f:facet>

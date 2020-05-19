@@ -1,5 +1,6 @@
 package org.intra.mbean.seguretat;
 
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -8,8 +9,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -23,16 +22,14 @@ import org.intra.integracio.Departament;
 import org.intra.integracio.Funcio;
 import org.intra.integracio.PermisUsuari;
 import org.intra.integracio.Usuari;
+import org.intra.model.PermisMD;
+import org.intra.model.FuncioMD;
+import org.intra.model.NivellPermis;
+import org.intra.model.UsuariMD;
 import org.intra.negoci.Seguretat;
-import org.intra.util.EdicioPermis;
-
-import model.NivellPermis;
-import model.UsuariMD;
 
 @Named
 @ViewScoped
-//@SessionScoped
-//@RequestScoped
 public class UsuariEdicio  implements Serializable  {
 
 	private static final long serialVersionUID = 1L;
@@ -52,43 +49,15 @@ public class UsuariEdicio  implements Serializable  {
 
 //	@Produces
 //	@Named
-//	private Integer id;
-
-//	@Produces
-//	@Named
-//	private String nom;
-
-//	@Produces
-//	@Named
-//	private String email;
-//
-//	@Produces
-//	@Named
-//	private Integer idioma;
-//
-//	@Produces
-//	@Named
-//	private Boolean certificat;
-//
-//	@Produces
-//	@Named
-//	private String contrasenya;
-//
-//	@Produces
-//	@Named
-//	private Integer idDepartament;
-//	
-//	@Produces
-//	@Named
-//	private String nomDepartament;
-
-	@Produces
-	@Named
-	private List<EdicioPermis> permisos;
+//	private List<EdicioPermis> permisos;
 
 	@Produces
     @Named
     private List<SelectItem> llistaFuncions;
+    
+	@Produces
+    @Named
+    private List<SelectItem> llistaNivells;
     
     @Produces
     @Named
@@ -98,13 +67,16 @@ public class UsuariEdicio  implements Serializable  {
     public void init() {
     	log.info("INIT");
 
-    	this.permisos=new ArrayList<EdicioPermis>();
     	log.info("Funcions");
     	llistaFuncions=new ArrayList<SelectItem>();
     	List<Funcio> funcions=seguretat.listFunctions();
 		llistaFuncions.add(new SelectItem(0,"Seleccionar"));
     	for (Funcio f:funcions) {
     		llistaFuncions.add(new SelectItem(f.getId(),f.getDescripcio()));
+    	}
+    	llistaNivells=new ArrayList<SelectItem>();
+    	for (NivellPermis n:NivellPermis.values()) {
+    		llistaNivells.add(new SelectItem(n,n.name()));
     	}
 
     	Map<String,String> params=context.getExternalContext().getRequestParameterMap();
@@ -113,21 +85,6 @@ public class UsuariEdicio  implements Serializable  {
         	log.info("Editant usuari id="+id.toString());
         	Usuari u=seguretat.getUsuariById(id, true); 
         	usuari=new UsuariMD(u);
-//        	nom=u.getNom();
-//        	idioma=u.getIdioma();
-//        	email=u.getEmail();
-//        	certificat=u.getCertificat();
-//        	contrasenya=u.getContrasenya();
-//        	idDepartament=u.getDepartament().getId();
-//        	nomDepartament=u.getDepartament().getNom();
-        	for (PermisUsuari p:u.getPermisos()) {
-        		EdicioPermis nou=new EdicioPermis();
-        		nou.setContrasenya(p.getContrasenya());
-        		nou.setDelete(false);
-        		nou.setIdFuncio(p.getFuncio().getId());
-        		nou.setDescripcioFuncio(p.getFuncio().getDescripcio());
-        		nou.setNivell(NivellPermis.values()[p.getNivell()]);
-        	}
         	
     	} else {
         	log.info("Creant nou usuari");
@@ -201,21 +158,21 @@ public class UsuariEdicio  implements Serializable  {
 		log.info("new " + nouPermis.getNewValue().toString());
 		Integer id=(Integer.parseInt((String) nouPermis.getNewValue()));
 		if (id==0) return;
-		log.info("Size(1) "+Integer.toString(permisos.size()));
-		for (EdicioPermis p:permisos) {
-			log.info("permis "+p.getIdFuncio());
-			if (p.getIdFuncio().equals(id)) {
+		log.info("Size(1) "+Integer.toString(usuari.getPermisos().size()));
+		for (PermisMD p:usuari.getPermisos()) {
+			log.info("permis "+p.getFuncio().getId());
+			if (p.getFuncio().getId().equals(id)) {
 	            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_WARN, "Aquesta funció ja està a la llista", "Funció duplicada");
 	            context.addMessage(null, m);
 	            this.novaFuncio=null;
 	            return;
 			}
 		}
-		EdicioPermis permis= new EdicioPermis();
+		PermisMD permis= new PermisMD();
 		Funcio f=seguretat.getFuncioById(id);
-		permis.setIdFuncio(f.getId());
-		permisos.add(permis);
-		log.info("Size(2) "+Integer.toString(permisos.size()));
+		permis.setFuncio(new FuncioMD(f));
+		usuari.getPermisos().add(permis);
+		log.info("Size(2) "+Integer.toString(usuari.getPermisos().size()));
 	}
 	
     public void save() throws Exception {

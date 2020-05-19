@@ -28,9 +28,8 @@ import org.intra.integracio.Departament;
 import org.intra.integracio.Funcio;
 import org.intra.integracio.PermisUsuari;
 import org.intra.integracio.Usuari;
-import org.intra.util.EdicioPermis;
-
-import model.UsuariMD;
+import org.intra.model.PermisMD;
+import org.intra.model.UsuariMD;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +52,9 @@ public class Seguretat {
    	public Usuari getUsuariById(Integer id, boolean b) {
 		Usuari u=em.find(Usuari.class, id);
     	TypedQuery<PermisUsuari> query= em.createNamedQuery("PermisUsuari.findByUsuari", PermisUsuari.class);
-		List<PermisUsuari> permisos=query.setParameter("usuari", u).getResultList();
+//		List<PermisUsuari> permisos=query.setParameter("usuari", u).getResultList();
+		log.info("getUsuari,permisos="+Integer.toString(u.getPermisos().size()));
+//		log.info("getUsuari,permisos="+Integer.toString(permisos.size()));
         return u;
     }
 
@@ -128,35 +129,44 @@ public class Seguretat {
 		Departament departament=getDepartamentById(ori.getDepartament().getId());
 		usuari.setDepartament(departament);
 		
-
-//		for (EdicioPermis e:permisos) {
-//			for (PermisUsuari p:usuari.getPermisos()) {
-//				if (e.getIdFuncio().equals(p.getFuncio().getId())) {
-//					if (e.isDelete()) {
-//						usuari.removePermisos(p);
-//					} else {
-//						p.setNivell(e.getNivell().ordinal());
-//						p.setContrasenya(e.getContrasenya());
-//					}
-//					e.setIdFuncio(null);
-//					break;
-//				}
-//			}
-//			if (e.getIdFuncio()!=null) {
-//				PermisUsuari nou=new PermisUsuari();
-//				Funcio funcio=getFuncioById(e.getIdFuncio());
-//				nou.setContrasenya(e.getContrasenya());
-//				nou.setFuncio(funcio);
-//				nou.setNivell(e.getNivell().ordinal());
-//				usuari.addPermisos(nou);
-//			}
-//		}
+		log.info("JPA size="+usuari.getPermisos().size());
+		log.info("MD size="+ori.getPermisos().size());
 		
 		if (usuari.getId()==null) {
 			em.persist(usuari);
-		} else {
-			em.flush();
 		}
+
+		for (PermisMD e:ori.getPermisos()) {
+			log.info("MD="+e.getFuncio().getDescripcio());
+			for (PermisUsuari p:usuari.getPermisos()) {
+				log.info("JPA="+p.getFuncio().getDescripcio());
+				if (e.getFuncio().getId().equals(p.getFuncio().getId())) {
+					if (e.isDelete()) {
+						log.info("Eliminant "+p.getFuncio().getDescripcio());
+						em.remove(p);
+						usuari.removePermis(p);
+					} else {
+						log.info("Actualitzant "+p.getFuncio().getDescripcio());
+						p.setNivell(e.getNivell().ordinal());
+						p.setContrasenya(e.getContrasenya());
+					}
+					e.setFuncio(null);
+					break;
+				}
+			}
+			if (e.getFuncio()!=null && !e.isDelete()) {
+				log.info("Afegint "+e.getFuncio().getDescripcio());
+				PermisUsuari nou=new PermisUsuari();
+				Funcio funcio=getFuncioById(e.getFuncio().getId());
+				nou.setContrasenya(e.getContrasenya());
+				nou.setFuncio(funcio);
+				nou.setNivell(e.getNivell().ordinal());
+				usuari.addPermis(nou);
+				em.persist(nou);
+			}
+		}
+		em.flush();
+		
 		return new UsuariMD(usuari);
 	}
 }

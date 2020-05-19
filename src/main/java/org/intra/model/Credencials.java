@@ -1,4 +1,4 @@
-package model;
+package org.intra.model;
 
 import javax.enterprise.inject.Model;
 import javax.validation.constraints.NotNull;

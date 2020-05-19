@@ -108,14 +108,13 @@ public class Usuari implements Serializable {
 		this.permisos = permisos;
 	}
 
-	public PermisUsuari addPermisos(PermisUsuari permis) {
+	public PermisUsuari addPermis(PermisUsuari permis) {
 		getPermisos().add(permis);
 		permis.setUsuari(this);
-
 		return permis;
 	}
 
-	public PermisUsuari removePermisos(PermisUsuari permis) {
+	public PermisUsuari removePermis(PermisUsuari permis) {
 		getPermisos().remove(permis);
 		permis.setUsuari(null);
 
