@@ -15,14 +15,11 @@
                <h:button outcome="index.jsf" value="Sortir" styleClass="register" />
             	<!--;-->
             </h:panelGrid>
-	        <h:dataTable var="_usuari" value="#{usuaris}"
-	            rendered="#{not empty usuaris}"
+	        <h:dataTable var="_usuari" value="#{llistaUsuaris}"
+	            rendered="#{not empty llistaUsuaris}"
 	            styleClass="simpletablestyle">
 	            <h:column>
 	                <f:facet name="header">Id</f:facet>
-	                <!--h:link value="#{_usuari.id}" outcome="usuariEditView.jsf" >
-	                	<f:param name="id" value="#{_usuari.id}" />
-	                </h:link-->
 	                <h:link value="#{_usuari.id}" onclick="UsuariEditor(#{_usuari.id})" />
 	            </h:column>
 	            <h:column>
@@ -36,6 +33,10 @@
 	            <h:column>
 	                <f:facet name="header">Email</f:facet>
 	                #{_usuari.email}
+	            </h:column>
+	            <h:column>
+	                <f:facet name="header">Id</f:facet>
+	                <h:button value="Eliminar" onclick="UsuariDelete(#{_usuari.id})" />
 	            </h:column>
 	        </h:dataTable>
 		</div>

@@ -12,6 +12,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
@@ -23,6 +24,7 @@ import org.intra.integracio.Funcio;
 import org.intra.integracio.PermisUsuari;
 import org.intra.integracio.Usuari;
 import org.intra.model.PermisMD;
+import org.intra.model.DepartamentMD;
 import org.intra.model.FuncioMD;
 import org.intra.model.NivellPermis;
 import org.intra.model.UsuariMD;
@@ -128,26 +130,14 @@ public class UsuariEdicio  implements Serializable  {
         	if (idChanged.getOldValue()!=null)
         		d=seguretat.getDepartamentById((Integer) idChanged.getOldValue());
 		}
+    	idChanged.setPhaseId(PhaseId.UPDATE_MODEL_VALUES);
 		if (d!=null) {
-			usuari.getDepartament().setId(d.getId());
-			usuari.getDepartament().setNom(d.getNom());
+			usuari.setDepartament(new DepartamentMD(d));
+//			usuari.getDepartament().setId(d.getId());
+//			usuari.getDepartament().setNom(d.getNom());
+		} else { 
+			usuari.setDepartament(new DepartamentMD());
 		}
-	}
-
-	public void nomChanged(ValueChangeEvent nomChanged) {
-//		nom=(String) nomChanged.getNewValue();
-	}
-
-	public void emailChanged(ValueChangeEvent emailChanged) {
-//		email=(String) emailChanged.getNewValue();
-	}
-
-	public void contrasenyaChanged(ValueChangeEvent contrasenyaChanged) {
-//		contrasenya=(String) contrasenyaChanged.getNewValue();
-	}
-
-	public void idiomaChanged(ValueChangeEvent idiomaChanged) {
-//		idioma=Integer.parseInt((String) idiomaChanged.getNewValue());
 	}
 
 	public void certificatChanged(ValueChangeEvent certificatChanged) {
@@ -173,6 +163,8 @@ public class UsuariEdicio  implements Serializable  {
 		permis.setFuncio(new FuncioMD(f));
 		usuari.getPermisos().add(permis);
 		log.info("Size(2) "+Integer.toString(usuari.getPermisos().size()));
+		nouPermis.setPhaseId(PhaseId.UPDATE_MODEL_VALUES);
+		novaFuncio=0;
 	}
 	
     public void save() throws Exception {
@@ -196,6 +188,29 @@ public class UsuariEdicio  implements Serializable  {
         }
     }
     
+    public String delete() throws Exception {
+        try {
+        	
+        	log.info("Esborrant Usuari");
+        	log.info("id "+usuari.getId());
+        	log.info("nom "+usuari.getNom());
+        	log.info("email "+usuari.getEmail());
+        	log.info("idioma "+usuari.getIdioma());
+        	log.info("certificat "+usuari.getCertificat());
+        	log.info("contrasenya "+usuari.getContrasenya());
+        	log.info("idDepartament "+usuari.getDepartament().getId());
+        	seguretat.eliminarUsuari(usuari);
+        	FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, "esborrat", "Deletion successful");
+        	context.addMessage(null, m);
+        } catch (Exception e) {
+        	String errorMessage = getRootErrorMessage(e);
+        	FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "Deletion unsuccessful");
+        	context.addMessage(null, m);
+        	return "";
+        }
+        return "window.close()";
+    }
+
     public void exit() {
     	log.info("cancel");
     }

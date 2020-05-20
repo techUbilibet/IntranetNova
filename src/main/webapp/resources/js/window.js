@@ -14,3 +14,10 @@ function UsuariEditor(id) {
 		param="?id="+id;
 	ObrirFinestra("usuariEditView.jsf"+param,850,650);
 }
+
+function UsuariDelete(id) {
+	var param="";
+	if (id!=undefined)
+		param="?id="+id;
+	ObrirFinestra("usuariDeleteView.jsf"+param,650,650);
+}

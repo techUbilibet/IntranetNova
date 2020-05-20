@@ -22,6 +22,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.intra.integracio.Departament;
@@ -49,12 +50,11 @@ public class Seguretat {
     	return getUsuariById(id, false);
     }
     
-   	public Usuari getUsuariById(Integer id, boolean b) {
+   	public Usuari getUsuariById(Integer id, boolean ambPermisos) {
 		Usuari u=em.find(Usuari.class, id);
-    	TypedQuery<PermisUsuari> query= em.createNamedQuery("PermisUsuari.findByUsuari", PermisUsuari.class);
-//		List<PermisUsuari> permisos=query.setParameter("usuari", u).getResultList();
-		log.info("getUsuari,permisos="+Integer.toString(u.getPermisos().size()));
-//		log.info("getUsuari,permisos="+Integer.toString(permisos.size()));
+		if (ambPermisos) {
+			log.info("getUsuari,permisos="+Integer.toString(u.getPermisos().size()));
+		}
         return u;
     }
 
@@ -168,5 +168,18 @@ public class Seguretat {
 		em.flush();
 		
 		return new UsuariMD(usuari);
+	}
+
+	public boolean eliminarUsuari(UsuariMD usuari) {
+		try {
+			Usuari u=getUsuariById(usuari.getId());
+			for (PermisUsuari p:u.getPermisos()) {
+				em.remove(p);
+			}
+			em.remove(u);
+    	} catch(Exception e) {
+    		return false;
+    	}
+		return true;
 	}
 }
