@@ -13,14 +13,16 @@ import org.intra.integracio.Usuari;
 import org.intra.negoci.Seguretat;
 
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
+@Named
 @RequestScoped
 public class Usuaris {
 
-//	@Inject
-//    private FacesContext context;
-//
+	@Inject
+    private FacesContext context;
+
 	@Inject
     private Logger log;
 
@@ -30,14 +32,22 @@ public class Usuaris {
     @Produces
     @Named
     private List<Usuari> llistaUsuaris;
-
+    
+    private String ordre=null;
+    
     public void onUsuariListChanged(@Observes(notifyObserver = Reception.IF_EXISTS) final Usuari usuari) {
-        retrieveAllUsuarisOrderedByName();
+        retrieveAllUsuaris();
     }
 
     @PostConstruct
-    public void retrieveAllUsuarisOrderedByName() {
-        llistaUsuaris = seguretat.listUsuaris();
+    public void retrieveAllUsuaris() {
+    	Map<String,String> params=context.getExternalContext().getRequestParameterMap();
+    	String ordre=null;
+    	if (params.containsKey("order")) {
+    		ordre=params.get("order");
+    	} else 
+    		ordre="id"; 
+        llistaUsuaris = seguretat.listUsuaris(ordre);
     }
     
 }

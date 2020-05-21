@@ -19,23 +19,37 @@
 	            rendered="#{not empty llistaUsuaris}"
 	            styleClass="simpletablestyle">
 	            <h:column>
-	                <f:facet name="header">Id</f:facet>
+	                <f:facet name="header">
+	                	<h:link value="Id" onclick="usuarisView.jsf" >
+	                		<f:param name="order" value="id" />
+	                	</h:link>
+	                </f:facet>
 	                <h:link value="#{_usuari.id}" onclick="UsuariEditor(#{_usuari.id})" />
 	            </h:column>
 	            <h:column>
-	                <f:facet name="header">Nom</f:facet>
+	                <f:facet name="header">
+	                	<h:link value="Nom" onclick="usuarisView.jsf" >
+	                		<f:param name="order" value="nom" />
+	                	</h:link>
+	                	
+	                </f:facet>
 	                #{_usuari.nom}
+	            </h:column>
+	            <h:column>
+	                <f:facet name="header">
+	                	<h:link value="Email" onclick="usuarisView.jsf" >
+	                		<f:param name="order" value="email" />
+	                	</h:link>
+	                	
+	                </f:facet>
+	                #{_usuari.email}
 	            </h:column>
 	            <h:column>
 	                <f:facet name="header">Departament</f:facet>
 	                #{_usuari.departament.nom}
 	            </h:column>
 	            <h:column>
-	                <f:facet name="header">Email</f:facet>
-	                #{_usuari.email}
-	            </h:column>
-	            <h:column>
-	                <f:facet name="header">Id</f:facet>
+	                <f:facet name="header">Operacions</f:facet>
 	                <h:button value="Eliminar" onclick="UsuariDelete(#{_usuari.id})" />
 	            </h:column>
 	        </h:dataTable>

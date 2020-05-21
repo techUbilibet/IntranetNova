@@ -73,8 +73,10 @@ public class Seguretat {
     	}
     }
     	
-    public List<Usuari> listUsuaris() {
-    	TypedQuery<Usuari> query= em.createNamedQuery("Usuari.findAll", Usuari.class);
+    public List<Usuari> listUsuaris(String ordre) {
+    	String sql="SELECT u FROM Usuari u order by u."+ordre;
+    	log.info(sql);
+    	TypedQuery<Usuari> query= em.createQuery(sql, Usuari.class);
     	List<Usuari> list=query.getResultList();
     	return list;
     }
