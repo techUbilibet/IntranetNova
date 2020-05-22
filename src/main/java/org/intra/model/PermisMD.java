@@ -2,6 +2,7 @@ package org.intra.model;
 
 import javax.inject.Named;
 
+import org.intra.integracio.PermisDepartament;
 import org.intra.integracio.PermisUsuari;
 
 @Named
@@ -26,6 +27,11 @@ public class PermisMD {
 		contrasenya=ori.getContrasenya();
 		
 		
+	}
+
+	public PermisMD(PermisDepartament ori) {
+		funcio= new FuncioMD(ori.getFuncio());
+		nivell=NivellPermis.values()[ori.getNivell()];
 	}
 
 	public Boolean getContrasenya() {

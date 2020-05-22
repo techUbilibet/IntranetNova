@@ -109,4 +109,11 @@ public class UsuariMD {
 		return permis;
 	}
 
+	public void resetPermisos() {
+		if (departament.getPermisos()!=null && !departament.getPermisos().isEmpty())
+			permisos=departament.getPermisos();
+		else
+			permisos=new ArrayList<PermisMD>();
+	}
+
 }

@@ -5,10 +5,6 @@ Carpeta settings convertir o copiar en .settings al descarregar la primera vegad
 
 Tasques
 
-- usuariEdicio: Que es carreguin els permisos del departament en assiganr-li un de nou
-	- marcar com eliminats els que no siguin del departament
-	- afegir els que siguin del departament però no siguin a la llista
-	
 - usuariEdicio: permetre cercar departament
 
 - usuariEdicio: Validar format email
@@ -20,10 +16,6 @@ Tasques
 	- consulta departament bitmap "?" 
 	- eliminar permis bitmap "X"
 
-- Usuaris: poder ordenar per id, nom, email
-	- si pot ser clicant a la capçalera de la columna, 
-	- sinò una llista de selecció
-
 - Usuaris: paginació
 
 - usuaris: botons, 
@@ -32,6 +24,8 @@ Tasques
 - Login: carregar permisos usuari
 	- controlar les opcions de menú
 	- controlar l'edició (save/delete) dels usuaris
+	
+- Login: en finestra
 
 - Aplicació: idioma segons usuari
   

@@ -120,24 +120,28 @@ public class UsuariEdicio  implements Serializable  {
 
 	public void departamentChanged(ValueChangeEvent idChanged) {
 		log.info("new " + idChanged.getNewValue().toString());
-		if (idChanged.getOldValue()!=null)
+		int nou=((Long) idChanged.getNewValue()).intValue();
+		int old=0;
+		if (idChanged.getOldValue()!=null) {
+			old=(int) idChanged.getOldValue();
 			log.info("old " + idChanged.getOldValue().toString());
-		Departament d=seguretat.getDepartamentById(((Long) idChanged.getNewValue()).intValue());
+		}
+		if (old==nou) return;
+		Departament d=seguretat.getDepartamentById(nou, true);
 		
 		if (d==null) {
         	FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Departament incorrecte, No es podran desar les dades fins que s'assigni un de correcte", "Departament incorrecte");
         	context.addMessage(null, m);
-        	if (idChanged.getOldValue()!=null)
-        		d=seguretat.getDepartamentById((Integer) idChanged.getOldValue());
+        	if (old!=0)
+        		d=seguretat.getDepartamentById(old);
 		}
-    	idChanged.setPhaseId(PhaseId.UPDATE_MODEL_VALUES);
 		if (d!=null) {
 			usuari.setDepartament(new DepartamentMD(d));
-//			usuari.getDepartament().setId(d.getId());
-//			usuari.getDepartament().setNom(d.getNom());
+			usuari.resetPermisos();
 		} else { 
 			usuari.setDepartament(new DepartamentMD());
 		}
+    	idChanged.setPhaseId(PhaseId.UPDATE_MODEL_VALUES);
 	}
 
 	public void certificatChanged(ValueChangeEvent certificatChanged) {
