@@ -11,7 +11,10 @@ import java.util.List;
  */
 @Entity
 @Table(name="departaments")
-@NamedQuery(name="Departament.findAll", query="SELECT d FROM Departament d")
+@NamedQueries({
+	@NamedQuery(name="Departament.findAll", query="SELECT d FROM Departament d"),
+	@NamedQuery(name="Departament.findLikeName", query="SELECT d FROM Departament d WHERE lower(d.nom) LIKE :nom")
+})
 public class Departament implements Serializable {
 	private static final long serialVersionUID = 1L;
 

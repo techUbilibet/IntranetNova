@@ -38,8 +38,6 @@ public class Departaments {
     
     private List<Departament> departaments;
 
-    // @Named provides access the return value via the EL variable name "usuaris" in the UI (e.g.
-    // Facelets or JSP view)
     @Produces
     @Named
     public List<Departament> getDepartaments() {
@@ -47,11 +45,11 @@ public class Departaments {
     }
 
     public void onDepartamentListChanged(@Observes(notifyObserver = Reception.IF_EXISTS) final Usuari usuari) {
-        retrieveAllDepartamentsOrderedByName();
+        retrieveAllDepartaments();
     }
 
     @PostConstruct
-    public void retrieveAllDepartamentsOrderedByName() {
+    public void retrieveAllDepartaments() {
         departaments = seguretat.listDepartaments();
     }
 }

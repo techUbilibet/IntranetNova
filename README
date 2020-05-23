@@ -5,8 +5,6 @@ Carpeta settings convertir o copiar en .settings al descarregar la primera vegad
 
 Tasques
 
-- usuariEdicio: permetre cercar departament
-
 - usuariEdicio: Validar format email
 
 - usuariEdicio: protocol canvi de contrasenya
@@ -28,4 +26,6 @@ Tasques
 - Login: en finestra
 
 - Aplicació: idioma segons usuari
-  
+
+- usuariEdicio: permetre cercar departament
+

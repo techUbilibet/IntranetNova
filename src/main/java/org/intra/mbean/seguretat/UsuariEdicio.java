@@ -2,7 +2,6 @@ package org.intra.mbean.seguretat;
 
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +20,6 @@ import javax.inject.Named;
 
 import org.intra.integracio.Departament;
 import org.intra.integracio.Funcio;
-import org.intra.integracio.PermisUsuari;
 import org.intra.integracio.Usuari;
 import org.intra.model.PermisMD;
 import org.intra.model.DepartamentMD;
@@ -32,7 +30,7 @@ import org.intra.negoci.Seguretat;
 
 @Named
 @ViewScoped
-public class UsuariEdicio  implements Serializable  {
+public class UsuariEdicio implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -48,10 +46,6 @@ public class UsuariEdicio  implements Serializable  {
 	@Produces
 	@Named
 	private UsuariMD usuari;
-
-//	@Produces
-//	@Named
-//	private List<EdicioPermis> permisos;
 
 	@Produces
     @Named

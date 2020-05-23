@@ -33,8 +33,6 @@ public class Usuaris {
     @Named
     private List<Usuari> llistaUsuaris;
     
-    private String ordre=null;
-    
     public void onUsuariListChanged(@Observes(notifyObserver = Reception.IF_EXISTS) final Usuari usuari) {
         retrieveAllUsuaris();
     }

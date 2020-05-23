@@ -21,3 +21,8 @@ function UsuariDelete(id) {
 		param="?id="+id;
 	ObrirFinestra("usuariDeleteView.jsf"+param,650,650);
 }
+
+function DepartamentSeleccio() {
+	ObrirFinestra("departamentSeleccioView.jsf",650,650);
+}
+

@@ -26,9 +26,11 @@
 									valueChangeListener="#{usuariEdicio.departamentChanged}"
 									onchange="submit()">
 									<f:convertNumber integerOnly="true" />
-								</h:inputText> <h:inputText id="nomDepartament"
+								</h:inputText>
+								<h:inputText id="nomDepartament"
 									value="#{usuari.departament.nom}" size="40" readonly="true"
-									tabindex="-1" /></td>
+									tabindex="-1" />
+								<!--h:commandButton type="button" id="selectDepartament" onclick="DepartamentSeleccio()" value="Sel" /--></td>
 						</tr>
 						<tr>
 							<td><h:outputLabel for="nom" value="Name:" /></td>

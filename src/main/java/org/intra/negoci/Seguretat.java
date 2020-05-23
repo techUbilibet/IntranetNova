@@ -100,6 +100,15 @@ public class Seguretat {
     	return list;
 	}
     
+	public List<Departament> listDepartamentsNom(String nom) {
+		TypedQuery<Departament> query= em.createNamedQuery("Departament.findLikeName", Departament.class);
+		if (nom==null) nom="%";
+		else nom="%"+nom.toLowerCase()+"%";
+		log.info("cercar "+nom);
+		query.setParameter("nom", nom);
+		List<Departament> list=query.getResultList();
+    	return list;
+	}
 
 	public List<Funcio> listFunctions() {
 		TypedQuery<Funcio> query= em.createNamedQuery("Funcio.findAll", Funcio.class);
@@ -179,4 +188,5 @@ public class Seguretat {
     	}
 		return true;
 	}
+
 }
