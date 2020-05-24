@@ -7,26 +7,29 @@
 	<ui:define name="content">
 		<div>
 			<h2>Departaments</h2>
+			<h:form>
 			<h:panelGrid columns="2">
 				<h:outputLabel for="nomDepartament" value="Nom:" />
-				<h:inputText id="nomDepartament" value="#{nomDepartament}" size="40" />
-				<h:commandButton action="#{departamentSeleccio.cercar}" value="cercar" />
+				<h:inputText id="nomDepartament" value="#{param.nom}" size="40" />
+				<h:commandButton type="submit" action="#{departamentSeleccio.cercar}" value="cercar" />
 		
 				<h:button onclick="window.close();" value="Sortir" styleClass="register" />
 			</h:panelGrid>
-			<h:dataTable var="_departament" value="#{llistaSelDepartament}"
-				rendered="#{not empty departaments}" styleClass="simpletablestyle">
-				<h:column>
-					<f:facet name="header">Id</f:facet>
-					<h:commandLink value="#{_departament.id}" action="#{departamentSeleccio.return(_departament.id)}" >
-	                	<f:param name="id" value="#{_departament.id}" />
-	                </h:commandLink>
-	            </h:column>
-				<h:column>
-					<f:facet name="header">Nom</f:facet>
+				<h:dataTable var="_departament" value="#{llistaSelDepartament}"
+					rendered="#{not empty departaments}" styleClass="simpletablestyle">
+					<h:column>
+						<f:facet name="header">Id</f:facet>
+						<h:commandLink value="#{_departament.id}"
+							action="#{departamentSeleccio.return(_departament.id)}">
+							<f:param name="id" value="#{_departament.id}" />
+						</h:commandLink>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Nom</f:facet>
 	                #{_departament.nom}
 	            </h:column>
-			</h:dataTable>
+				</h:dataTable>
+			</h:form>
 		</div>
 	</ui:define>
 </ui:composition>

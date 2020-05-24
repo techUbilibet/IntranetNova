@@ -10,14 +10,7 @@ Tasques
 - usuariEdicio: protocol canvi de contrasenya
 	- En edició oculta permetre la introducció d'una nova contrasenya
 
-- usuariEdicio: botons, 
-	- consulta departament bitmap "?" 
-	- eliminar permis bitmap "X"
-
 - Usuaris: paginació
-
-- usuaris: botons, 
-	- eliminar usuari bitmap "X"
 
 - Login: carregar permisos usuari
 	- controlar les opcions de menú
@@ -28,4 +21,8 @@ Tasques
 - Aplicació: idioma segons usuari
 
 - usuariEdicio: permetre cercar departament
+
+- usuariEdicio: botons, 
+	- consulta departament bitmap "?" 
+
 

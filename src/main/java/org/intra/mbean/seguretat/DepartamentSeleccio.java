@@ -6,12 +6,15 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Model;
 import javax.enterprise.inject.Produces;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.intra.integracio.Departament;
+import org.intra.model.Parametres;
 import org.intra.negoci.Seguretat;
 
 @Named
@@ -29,11 +32,20 @@ public class DepartamentSeleccio implements Serializable {
 	@Inject
     private Logger log;
 
-	@Produces
-    @Named
-    private String nomDepartament;
+	@Inject
+    private Parametres param;
 	
-    @Produces
+//    public String getNomDepartament() {
+//    	log.info("get nom");
+//		return nomDepartament;
+//	}
+//
+//	public void setNomDepartament(String nomDepartament) {
+//    	log.info("set nom");
+//		this.nomDepartament = nomDepartament;
+//	}
+
+	@Produces
     @Named
     private List<Departament> llistaSelDepartament;
     
@@ -49,6 +61,6 @@ public class DepartamentSeleccio implements Serializable {
     
     public void cercar() throws Exception {
     	log.info("Cercar");
-    	llistaSelDepartament = seguretat.listDepartamentsNom(nomDepartament);
+    	llistaSelDepartament = seguretat.listDepartamentsNom(param.getNom());
     }
 }
