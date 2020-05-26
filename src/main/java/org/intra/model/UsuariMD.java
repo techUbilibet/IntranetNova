@@ -116,4 +116,20 @@ public class UsuariMD {
 			permisos=new ArrayList<PermisMD>();
 	}
 
+	public boolean potAccedir(Integer idFuncio) {
+		for (PermisMD p:permisos) {
+			if (p.getFuncio().getId().equals(idFuncio)) return true;
+		}
+		return false;
+	}
+
+	public boolean tePermis(Integer idFuncio, String nivell) {
+		NivellPermis niv=NivellPermis.valueOf(nivell); 
+		for (PermisMD p:permisos) {
+			if (!p.getFuncio().getId().equals(idFuncio)) continue;
+			if (p.getNivell().compareTo(niv)>=0) return true;
+			break;
+		}
+		return false;
+	}
 }

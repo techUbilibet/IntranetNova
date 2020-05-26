@@ -24,7 +24,8 @@
 	                		<f:param name="order" value="id" />
 	                	</h:link>
 	                </f:facet>
-	                <h:link value="#{_usuari.id}" onclick="UsuariEditor(#{_usuari.id})" />
+	                <h:link value="#{_usuari.id}" onclick="UsuariEditor(#{_usuari.id})" rendered="#{login.usuari.potAccedir(1)}" />
+	                <h:link value="#{_usuari.id}" onclick="NotAllowed()" rendered="#{!(login.usuari.potAccedir(1))}" />
 	            </h:column>
 	            <h:column>
 	                <f:facet name="header">

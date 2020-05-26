@@ -65,6 +65,9 @@ public class Seguretat {
     		Usuari u=query.setParameter("email", email).getSingleResult();
     		if (u==null) return null;
 			log.info("getUsuariEmail,permisos="+Integer.toString(u.getPermisos().size()));
+//			for (PermisUsuari p:u.getPermisos()) {
+//				log.info("getUsuariEmail,permis="+p.getFuncio().getId().toString());
+//			}
         	return u;
     	} catch(NoResultException e) {
     		return null;

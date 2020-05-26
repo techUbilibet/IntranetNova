@@ -35,8 +35,14 @@
 						<li><a href="">Contactes de serveis</a></li>
 						<li><a href="">Dns</a></li>
 						<hr/>
-						<li><a href="departamentsView.jsf">Departaments</a></li>
-						<li><a href="usuarisView.jsf">Usuaris</a></li>
+						<li>
+							<h:link value="Departaments" outcome="departamentsView.jsf" rendered="#{login.loggedIn and login.usuari.potAccedir(5)}" />
+							<h:link value="Departaments" onclick="NotAllowed()" rendered="#{!(login.loggedIn and login.usuari.potAccedir(5))}" />
+						</li>
+						<li>
+							<h:link value="Usuaris" outcome="usuarisView.jsf" rendered="#{login.loggedIn and login.usuari.potAccedir(3)}" />
+							<h:link value="Usuaris" onclick="NotAllowed()" rendered="#{!(login.loggedIn and login.usuari.potAccedir(3))}" />
+						</li>
 					</ul>
 				</li>
 				<li><a href="">Dominis</a>

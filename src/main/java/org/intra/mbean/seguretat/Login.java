@@ -10,6 +10,9 @@ import javax.inject.Named;
 
 import org.intra.integracio.Usuari;
 import org.intra.model.Credencials;
+import org.intra.model.NivellPermis;
+import org.intra.model.PermisMD;
+import org.intra.model.UsuariMD;
 import org.intra.negoci.Seguretat;
 import org.intra.util.LoggedIn;
 
@@ -27,7 +30,7 @@ public class Login implements Serializable {
     @Inject
     private Seguretat seguretat;
 
-	private Usuari usuari;
+	private UsuariMD usuari;
 
     @PostConstruct
     public void init() {
@@ -36,8 +39,8 @@ public class Login implements Serializable {
     
 	
 	public String login() {
-
-		usuari=seguretat.getUsuariByEmail(credencials.getEmail());
+		Usuari u=seguretat.getUsuariByEmail(credencials.getEmail());
+		usuari=new UsuariMD(u);
 		if (usuari==null || !usuari.getContrasenya().equals(credencials.getContrasenya())) {
 			usuari=null;
 			return "loginView.jsf";
@@ -53,20 +56,19 @@ public class Login implements Serializable {
 		return usuari != null;
 	}
 	
-	public Usuari getUsuari() {
+	public UsuariMD getUsuari() {
 		return usuari;
 	}
 
-	public void setUsuari(Usuari usuari) {
+	public void setUsuari(UsuariMD usuari) {
 		this.usuari = usuari;
 	}
 
 
 	@Produces
 	@LoggedIn
-	Usuari getCurrentUser() {
+	UsuariMD getCurrentUser() {
 		return usuari;
 	}
-	
 	
 }

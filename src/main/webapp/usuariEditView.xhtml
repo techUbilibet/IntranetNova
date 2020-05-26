@@ -24,7 +24,7 @@
 							<td><h:inputText id="idDepartament"
 									value="#{usuari.departament.id}" size="5" maxlength="10"
 									valueChangeListener="#{usuariEdicio.departamentChanged}"
-									onchange="submit()">
+									onchange="submit()" readonly="#{!(login.usuari.tePermis(2,'MODIFICAR'))}" >
 									<f:convertNumber integerOnly="true" />
 								</h:inputText>
 								<h:inputText id="nomDepartament"
@@ -70,23 +70,24 @@
 							<f:facet name="header">Funció</f:facet>
 			                #{_permis.funcio.descripcio}
 						</h:column>
-						<h:column>
+						<h:column >
 							<f:facet name="header">Nivell</f:facet>
-							<h:selectOneListbox id="nivell" value="#{_permis.nivell}"
+							<h:selectOneListbox id="nivell" value="#{_permis.nivell}" rendered="#{login.usuari.tePermis(2,'MODIFICAR')}" 
 								size="1" tabindex="0">
 								<f:selectItems value="#{llistaNivells}" />
 							</h:selectOneListbox>
+							<h:outputText value="#{_permis.nivell.name()}" rendered="#{!(login.usuari.tePermis(2,'MODIFICAR'))}" />
 						</h:column>
 						<h:column>
 							<f:facet name="header">Amb contrasenya</f:facet>
-							<h:selectBooleanCheckbox value="#{_permis.contrasenya}" />
+							<h:selectBooleanCheckbox value="#{_permis.contrasenya}" readonly="#{!(login.usuari.tePermis(2,'MODIFICAR'))}" />
 						</h:column>
 						<h:column>
 							<f:facet name="header">Eliminar</f:facet>
-							<h:selectBooleanCheckbox value="#{_permis.delete}" />
+							<h:selectBooleanCheckbox value="#{_permis.delete}" readonly="#{!(login.usuari.tePermis(2,'MODIFICAR'))}" />
 						</h:column>
 					</h:dataTable>
-					<h:panelGrid columns="2">
+					<h:panelGrid columns="2" rendered="#{login.usuari.tePermis(2,'MODIFICAR')}">
 						<h:outputLabel for="addPermis" value="Nou permís:" />
 						<h:selectOneListbox id="addPermis" value="#{novaFuncio}" size="1"
 							valueChangeListener="#{usuariEdicio.nouPermis}"
