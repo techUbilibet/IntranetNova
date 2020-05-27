@@ -5,20 +5,14 @@ Carpeta settings convertir o copiar en .settings al descarregar la primera vegad
 
 Tasques
 
-- Login: carregar permisos usuari
-	- controlar les opcions de menú
-	- controlar l'edició (save/delete) dels usuaris
-	
-- Login: en finestra
+- Aplicació: idioma segons usuari
 
-- usuariEdicio: Validar format email
+- Login: en finestra
 
 - usuariEdicio: protocol canvi de contrasenya
 	- En edició oculta permetre la introducció d'una nova contrasenya
 
 - Usuaris: paginació
-
-- Aplicació: idioma segons usuari
 
 - usuariEdicio: permetre cercar departament
 

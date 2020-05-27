@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -26,6 +27,9 @@ public class Login implements Serializable {
 	
 	@Inject
 	Credencials credencials;
+
+	@Inject
+    private FacesContext context;
 
     @Inject
     private Seguretat seguretat;
@@ -50,6 +54,8 @@ public class Login implements Serializable {
 
 	public void logout() {
 		usuari = null;
+//		context.getViewRoot().getViewMap().clear();
+		context.getExternalContext().invalidateSession();
 	}
 
 	public boolean isLoggedIn() {

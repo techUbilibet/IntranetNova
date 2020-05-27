@@ -138,10 +138,6 @@ public class UsuariEdicio implements Serializable {
     	idChanged.setPhaseId(PhaseId.UPDATE_MODEL_VALUES);
 	}
 
-	public void certificatChanged(ValueChangeEvent certificatChanged) {
-//		certificat=(Boolean) certificatChanged.getNewValue();
-	}
-
 	public void nouPermis(ValueChangeEvent nouPermis) {
 		log.info("new " + nouPermis.getNewValue().toString());
 		Integer id=(Integer.parseInt((String) nouPermis.getNewValue()));
@@ -168,6 +164,12 @@ public class UsuariEdicio implements Serializable {
     public void save() throws Exception {
         try {
         	
+        	FacesMessage m; 
+        	if (!usuari.getEmail().matches("^[a-zA-Z0-9-_.]+@[a-zA-Z]+\\.[a-zA-Z]{2,}(\\.[a-zA-Z]{2,}|)")) {
+            	m = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Format email incorrecte", "Registration unsuccessful");
+            	context.addMessage(null, m);
+        		return;
+        	}
         	log.info("Destant Usuari");
         	log.info("id "+usuari.getId());
         	log.info("nom "+usuari.getNom());
@@ -177,7 +179,7 @@ public class UsuariEdicio implements Serializable {
         	log.info("contrasenya "+usuari.getContrasenya());
         	log.info("idDepartament "+usuari.getDepartament().getId());
         	usuari=seguretat.saveUsuari(usuari);
-        	FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, "desat amb id "+usuari.getId().toString(), "Registration successful");
+        	m = new FacesMessage(FacesMessage.SEVERITY_INFO, "desat amb id "+usuari.getId().toString(), "Registration successful");
         	context.addMessage(null, m);
         } catch (Exception e) {
         	String errorMessage = getRootErrorMessage(e);

@@ -13,7 +13,9 @@ public class UsuariMD {
 
 	private Integer id;
 	private String nom;
-	private String email;
+
+   	private String email;
+	
 	private Integer idioma;
 	private Boolean certificat;
 	private String contrasenya;

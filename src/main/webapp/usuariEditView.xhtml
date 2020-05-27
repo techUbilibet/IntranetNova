@@ -99,7 +99,8 @@
 			</div>
 			<p>
 				<h:panelGrid columns="2">
-					<h:commandButton action="#{usuariEdicio.save}" value="Desar" />
+					<h:commandButton action="#{usuariEdicio.save}" value="Desar" rendered="#{login.usuari.tePermis(2,'MODIFICAR')}" />
+					<h:button onclick="NotAllowed()" value="Desar" rendered="#{!(login.usuari.tePermis(2,'MODIFICAR'))}" />
 					<h:button id="cancel" onclick="window.close();" value="Sortir" />
 					<h:messages styleClass="messages" errorClass="invalid"
 						infoClass="valid" warnClass="warning" globalOnly="true" />
