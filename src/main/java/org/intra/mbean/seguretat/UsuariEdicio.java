@@ -167,12 +167,19 @@ public class UsuariEdicio implements Serializable {
 	
     public void save() throws Exception {
         try {
-        	
+        	if (!login.isLoggedIn()) return;
         	FacesMessage m; 
         	if (!usuari.getEmail().matches("^[a-zA-Z0-9-_.]+@[a-zA-Z]+\\.[a-zA-Z]{2,}(\\.[a-zA-Z]{2,}|)")) { //$NON-NLS-1$
             	m = new FacesMessage(FacesMessage.SEVERITY_ERROR, login.getMsg("err.email.no"), login.getMsg("err.save.no")); //$NON-NLS-1$ //$NON-NLS-2$
             	context.addMessage(null, m);
         		return;
+        	}
+        	if (usuari.getNovaContrasenya()!=null && !usuari.getNovaContrasenya().isEmpty()) {
+        		if (!usuari.getNovaContrasenya().matches("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{10,50}")) {
+                	m = new FacesMessage(FacesMessage.SEVERITY_ERROR, login.getMsg("err.psw.no"), login.getMsg("err.save.no")); //$NON-NLS-1$ //$NON-NLS-2$
+                	context.addMessage(null, m);
+        		} else 
+        			usuari.setContrasenya();
         	}
         	log.info("Destant Usuari"); //$NON-NLS-1$
         	log.info("id "+usuari.getId()); //$NON-NLS-1$
@@ -180,8 +187,8 @@ public class UsuariEdicio implements Serializable {
         	log.info("email "+usuari.getEmail()); //$NON-NLS-1$
         	log.info("idioma "+usuari.getIdioma()); //$NON-NLS-1$
         	log.info("certificat "+usuari.getCertificat()); //$NON-NLS-1$
-        	log.info("contrasenya "+usuari.getContrasenya()); //$NON-NLS-1$
         	log.info("idDepartament "+usuari.getDepartament().getId()); //$NON-NLS-1$
+        	log.info("contrasenya "+usuari.getContrasenya()); //$NON-NLS-1$
         	usuari=seguretat.saveUsuari(usuari);
         	m = new FacesMessage(FacesMessage.SEVERITY_INFO, login.getMsg("msg.save.ok.id")+usuari.getId().toString(), login.getMsg("msg.save.ok")); //$NON-NLS-1$ //$NON-NLS-2$
         	context.addMessage(null, m);
@@ -195,14 +202,7 @@ public class UsuariEdicio implements Serializable {
     public String delete() throws Exception {
         try {
         	
-        	log.info("Esborrant Usuari"); //$NON-NLS-1$
-        	log.info("id "+usuari.getId()); //$NON-NLS-1$
-        	log.info("nom "+usuari.getNom()); //$NON-NLS-1$
-        	log.info("email "+usuari.getEmail()); //$NON-NLS-1$
-        	log.info("idioma "+usuari.getIdioma()); //$NON-NLS-1$
-        	log.info("certificat "+usuari.getCertificat()); //$NON-NLS-1$
-        	log.info("contrasenya "+usuari.getContrasenya()); //$NON-NLS-1$
-        	log.info("idDepartament "+usuari.getDepartament().getId()); //$NON-NLS-1$
+        	log.info("Esborrant Usuari id "+usuari.getId()); //$NON-NLS-1$
         	String id=usuari.getId().toString();
         	seguretat.eliminarUsuari(usuari);
         	FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, login.getMsg("msg.deleted.id")+id, login.getMsg("msg.deleted")); //$NON-NLS-1$ //$NON-NLS-2$

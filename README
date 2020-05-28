@@ -5,13 +5,6 @@ Carpeta settings convertir o copiar en .settings al descarregar la primera vegad
 
 Tasques
 
-- Aplicació: idioma segons usuari
-
-- Login: en finestra
-
-- usuariEdicio: protocol canvi de contrasenya
-	- En edició oculta permetre la introducció d'una nova contrasenya
-
 - Usuaris: paginació
 
 - usuariEdicio: permetre cercar departament
@@ -19,4 +12,6 @@ Tasques
 - usuariEdicio: botons, 
 	- consulta departament bitmap "?" 
 
-
+- Script Creació taules
+- Script insertar funcions, departaments, permisos departaments i primer usuari amb permisos
+- 

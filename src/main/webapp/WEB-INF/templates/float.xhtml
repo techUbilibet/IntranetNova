@@ -8,16 +8,15 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <h:outputStylesheet name="css/screen.css" />
 </h:head>
-<h:body>
+<h:body rendered="#{login.loggedIn}">
 	<h:outputScript library="js" name="window.js" target="body" />
     <div id="container">
     	<img src="resources/gfx/logo-ubilibet-blanc.png" width="386" height="118" class="logo" />
     	<h1>Ubilibet Intranet 2.0</h1>
-    	<h:form>
+    	<h:form >
             <h:panelGrid columns="2">
 				<h:outputLabel for="username">#{login.getMsg('txt.user')}:</h:outputLabel>
-				<h:inputText id="nouser" value="#{login.usuari.nom}"  rendered="#{login.loggedIn}" readonly="true" />
-				<h:inputText id="username" value="Ningú"  rendered="#{!login.loggedIn}" readonly="true" />
+				<h:inputText id="nouser" value="#{login.usuari.nom}" readonly="true" />
 			</h:panelGrid>
     	</h:form>
         <div id="content">

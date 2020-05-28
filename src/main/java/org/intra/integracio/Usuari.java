@@ -3,8 +3,6 @@ package org.intra.integracio;
 import java.io.Serializable;
 import javax.persistence.*;
 
-import org.intra.model.NivellPermis;
-
 import java.util.List;
 
 

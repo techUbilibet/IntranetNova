@@ -1,7 +1,6 @@
 package org.intra.mbean.seguretat;
 
 import java.io.Serializable;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
@@ -15,11 +14,10 @@ import javax.inject.Named;
 import org.intra.integracio.Usuari;
 import org.intra.model.Credencials;
 import org.intra.model.Idioma;
-import org.intra.model.NivellPermis;
-import org.intra.model.PermisMD;
 import org.intra.model.UsuariMD;
 import org.intra.negoci.Seguretat;
 import org.intra.util.LoggedIn;
+
 
 @Named
 @SessionScoped
@@ -74,11 +72,11 @@ public class Login implements Serializable {
 		return "index.jsf";
 	}
 
-	public void logout() {
+	public String logout() {
 		usuari = null;
-//		context.getViewRoot().getViewMap().clear();
-//		context.getExternalContext().invalidateSession();
         setIdioma();
+		context.getExternalContext().invalidateSession();
+		return "index.jsf";
 	}
 
 	public boolean isLoggedIn() {

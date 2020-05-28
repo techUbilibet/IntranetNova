@@ -19,6 +19,7 @@ public class UsuariMD {
 	private Integer idioma;
 	private Boolean certificat;
 	private String contrasenya;
+	private String novaContrasenya;
 	private DepartamentMD departament;
 	
 	private List<PermisMD> permisos; 
@@ -86,6 +87,10 @@ public class UsuariMD {
 		return contrasenya;
 	}
 
+	public void setContrasenya() {
+		this.contrasenya = this.novaContrasenya;
+	}
+	
 	public void setContrasenya(String contrasenya) {
 		this.contrasenya = contrasenya;
 	}
@@ -133,5 +138,13 @@ public class UsuariMD {
 			break;
 		}
 		return false;
+	}
+
+	public String getNovaContrasenya() {
+		return novaContrasenya;
+	}
+
+	public void setNovaContrasenya(String novaContrasenya) {
+		this.novaContrasenya = novaContrasenya;
 	}
 }
