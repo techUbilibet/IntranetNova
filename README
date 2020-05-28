@@ -1,17 +1,14 @@
 Intranet 2.0
 
-Carpeta settings convertir o copiar en .settings al descarregar la primera vegada
+Per a IDE Eclipse 2019-09
+Carpeta settings copiar en .settings al descarregar la primera vegada
+
+Postrgesql
+	ubilibet.sql: executat amb psql crea la base de dades i les taules previstes incialment
+	ubilibetData.sql: Afegeix quatre funcions, dos departaments i un usuari amb els permisos corresponents
+
+Wildfly
+	standalone-add.txt Incloure el driver i el datasource a l'arxiu standalone.xml 
+	Si no tens instal·lat postgresql al wildfly copia postgresql.jar a $WILDFLY_HOME/modules/system/layers/base/org/postgresql/main/
 
 
-Tasques
-
-- Usuaris: paginació
-
-- usuariEdicio: permetre cercar departament
-
-- usuariEdicio: botons, 
-	- consulta departament bitmap "?" 
-
-- Script Creació taules
-- Script insertar funcions, departaments, permisos departaments i primer usuari amb permisos
-- 

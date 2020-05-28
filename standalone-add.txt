@@ -1,0 +1,21 @@
+                <datasource jndi-name="java:/UbilibetDS" pool-name="UbilibetDS" use-ccm="false">
+                    <connection-url>jdbc:postgresql://localhost:5432/ubilibetdb</connection-url>
+                    <driver-class>org.postgresql.Driver</driver-class>
+                    <datasource-class>org.postgresql.ds.PGSimpleDataSource</datasource-class>
+                    <driver>postgresql</driver>
+                    <security>
+                        <user-name>ubilibet</user-name>
+                        <password>mephisto</password>
+                    </security>
+                    <validation>
+                        <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"/>
+                        <background-validation>true</background-validation>
+                        <exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"/>
+                    </validation>
+                </datasource>
+
+                    <driver name="postgresql" module="org.postgresql">
+                        <xa-datasource-class>org.postgresql.xa.PGXADataSource</xa-datasource-class>
+                    </driver>
+
+
