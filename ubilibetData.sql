@@ -3,6 +3,8 @@ INSERT INTO public.funcions VALUES (3, 'Control Usuaris', 'Marc usuaris');
 INSERT INTO public.funcions VALUES (4, 'Control Departaments', 'Marc departaments');
 INSERT INTO public.funcions VALUES (2, 'Edicio permisos usuaris i canvi departament', 'Assignar i revocar permisos usuaris');
 
+INSERT INTO public.departaments VALUES (1, 'Seguretat');
+INSERT INTO public.departaments VALUES (2, 'Administració');
 
 INSERT INTO public.permisos_departaments VALUES (1, 1, 0);
 INSERT INTO public.permisos_departaments VALUES (2, 1, 0);
