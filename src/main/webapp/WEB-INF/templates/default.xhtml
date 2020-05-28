@@ -16,66 +16,66 @@
     	<h1>Ubilibet Intranet 2.0</h1>
     	<h:form>
             <h:panelGrid columns="2">
-				<h:outputLabel for="username">usuari:</h:outputLabel>
+				<h:outputLabel for="username">#{login.getMsg('txt.user')}:</h:outputLabel>
 				<h:inputText id="nouser" value="#{login.usuari.nom}"  rendered="#{login.loggedIn}" readonly="true" />
 				<h:inputText id="username" value="Ningú"  rendered="#{!login.loggedIn}" readonly="true" />
-	    		<h:commandButton value="Login" action="loginView" rendered="#{!login.loggedIn}" />
-				<h:commandButton value="Logout" action="#{login.logout}" rendered="#{login.loggedIn}" />
+	    		<h:commandButton value="Login" action="loginView" rendered="#{!login.loggedIn}" image="resources/gfx/inside32.png" />
+				<h:commandButton value="Logout" action="#{login.logout}" rendered="#{login.loggedIn}" image="resources/gfx/outside32.png" />
 			</h:panelGrid>
     	</h:form>
 		<div id="header">
 			<ul class="nav">
-				<li><a href="">Base de dades</a>
+				<li><a href="">#{login.getMsg('menu.db')}</a>
 					<ul>
-						<li><a href="">Contactes de facturaci&oacute;</a></li>
-						<li><a href="">Grups</a></li>
+						<li><a href="">#{login.getMsg('menu.cf')}</a></li>
+						<li><a href="">#{login.getMsg('menu.gr')}</a></li>
 						<hr/>
-						<li><a href="">Partners</a></li>
-						<li><a href="">Titulars</a></li>
-						<li><a href="">Contactes de serveis</a></li>
-						<li><a href="">Dns</a></li>
+						<li><a href="">#{login.getMsg('menu.prt')}</a></li>
+						<li><a href="">#{login.getMsg('menu.own')}</a></li>
+						<li><a href="">#{login.getMsg('menu.cte')}</a></li>
+						<li><a href="">#{login.getMsg('menu.dns')}</a></li>
 						<hr/>
 						<li>
-							<h:link value="Departaments" outcome="departamentsView.jsf" rendered="#{login.loggedIn and login.usuari.potAccedir(5)}" />
-							<h:link value="Departaments" onclick="NotAllowed()" rendered="#{!(login.loggedIn and login.usuari.potAccedir(5))}" />
+							<h:link value="#{login.getMsg('menu.dpt')}" outcome="departamentsView.jsf" rendered="#{login.loggedIn and login.usuari.potAccedir(5)}" />
+							<h:link value="#{login.getMsg('menu.dpt')}" onclick="NotAllowed()" rendered="#{!(login.loggedIn and login.usuari.potAccedir(5))}" />
 						</li>
 						<li>
-							<h:link value="Usuaris" outcome="usuarisView.jsf" rendered="#{login.loggedIn and login.usuari.potAccedir(3)}" />
-							<h:link value="Usuaris" onclick="NotAllowed()" rendered="#{!(login.loggedIn and login.usuari.potAccedir(3))}" />
+							<h:link value="#{login.getMsg('menu.usr')}" outcome="usuarisView.jsf" rendered="#{login.loggedIn and login.usuari.potAccedir(3)}" />
+							<h:link value="#{login.getMsg('menu.usr')}" onclick="NotAllowed()" rendered="#{!(login.loggedIn and login.usuari.potAccedir(3))}" />
 						</li>
 					</ul>
 				</li>
-				<li><a href="">Dominis</a>
+				<li><a href="">#{login.getMsg('menu.dom')}</a>
 					<ul>
-						<li><a href="">TLDs</a></li>
-						<li><a href="">Dominis vigilància</a></li>
-						<li><a href="">Dominis pendents creació</a></li>
-						<li><a href="">Dominis</a></li>
-						<li><a href="">Peticions</a></li>
-						<li><a href="">Dominis pendents aprovació</a></li>
-						<li><a href="">Dominis pendents renovació</a></li>
-						<li><a href="">Operacions</a>
+						<li><a href="">#{login.getMsg('menu.tld')}</a></li>
+						<li><a href="">#{login.getMsg('menu.domv')}</a></li>
+						<li><a href="">#{login.getMsg('menu.domt')}</a></li>
+						<li><a href="">#{login.getMsg('menu.dom')}</a></li>
+						<li><a href="">#{login.getMsg('menu.req')}</a></li>
+						<li><a href="">#{login.getMsg('menu.dom.cnf')}</a></li>
+						<li><a href="">#{login.getMsg('menu.dom.rnw')}</a></li>
+						<li><a href="">#{login.getMsg('menu.serv')}</a>
 							<ul>
-								<li><a href="">Pre-crear</a></li>
-								<li><a href="">Pre-crear múltiple</a></li>
+								<li><a href="">#{login.getMsg('menu.queue')}</a></li>
+								<li><a href="">#{login.getMsg('menu.queue.bulk')}</a></li>
 								<hr/>
-								<li><a href="">Crear</a></li>
-								<li><a href="">Crear múltiple</a></li>
+								<li><a href="">#{login.getMsg('menu.create')}</a></li>
+								<li><a href="">#{login.getMsg('menu.create.bulk')}</a></li>
 								<hr/>
-								<li><a href="">Traslladar</a></li>
-								<li><a href="">Traslladar múltiple</a></li>
+								<li><a href="">#{login.getMsg('menu.transfer')}</a></li>
+								<li><a href="">#{login.getMsg('menu.transfer.bulk')}</a></li>
 								<hr/>
-								<li><a href="">Activar expiració</a></li>
-								<li><a href="">Activar expiració múltiple</a></li>
-								<li><a href="">Desactivar expiració</a></li>
-								<li><a href="">Desactivar expiració múltiple</a></li>
+								<li><a href="">#{login.getMsg('menu.expire')}</a></li>
+								<li><a href="">#{login.getMsg('menu.expire.bulk')}</a></li>
+								<li><a href="">#{login.getMsg('menu.unexpire')}</a></li>
+								<li><a href="">#{login.getMsg('menu.unexpire.bulk')}</a></li>
 								<hr/>
-								<li><a href="">Modificar titular</a></li>
-								<li><a href="">Modificar titular múltiple</a></li>
-								<li><a href="">Modificar Contactes</a></li>
-								<li><a href="">Modificar Contactes múltiple</a></li>
-								<li><a href="">Modificar dns</a></li>
-								<li><a href="">Modificar dns múltiple</a></li>
+								<li><a href="">#{login.getMsg('menu.mod.own')}</a></li>
+								<li><a href="">#{login.getMsg('menu.mod.own.bulk')}</a></li>
+								<li><a href="">#{login.getMsg('menu.mod.cte')}</a></li>
+								<li><a href="">#{login.getMsg('menu.mod.cte.bulk')}</a></li>
+								<li><a href="">#{login.getMsg('menu.mod.dns')} dns</a></li>
+								<li><a href="">#{login.getMsg('menu.mod.dns.bulk')}</a></li>
 							</ul>
 						</li>
 					</ul>

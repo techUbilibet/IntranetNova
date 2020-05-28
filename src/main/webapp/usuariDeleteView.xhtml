@@ -11,33 +11,33 @@
 				<h2 class="tab">Dades</h2>
 				<table>
 					<tr>
-						<td><h:outputLabel for="id" value="Id:" /></td>
+						<td><h:outputLabel for="id" value="#{login.getMsg('txt.id')}:" /></td>
 						<td><h:outputText id="id" value="#{usuari.id}" size="5" /></td>
 					</tr>
 					<tr>
-						<td><h:outputLabel for="nomDepartament" value="Departament:" /></td>
+						<td><h:outputLabel for="nomDepartament" value="#{login.getMsg('txt.dept')}:" /></td>
 						<td><h:outputText id="nomDepartament"
 								value="#{usuari.departament.nom}" size="40" /></td>
 					</tr>
 					<tr>
-						<td><h:outputLabel for="nom" value="Name:" /></td>
+						<td><h:outputLabel for="nom" value="#{login.getMsg('txt.name')}:" /></td>
 						<td><h:outputText id="nom" value="#{usuari.nom}"
 								required="true" size="30" maxlength="50" /></td>
 					</tr>
 					<tr>
-						<td><h:outputLabel for="email" value="Email:" /></td>
+						<td><h:outputLabel for="email" value="#{login.getMsg('txt.email')}:" /></td>
 						<td><h:outputText id="email" value="#{usuari.email}"
 								required="true" size="30" maxlength="50" /></td>
 					</tr>
 					<tr>
-						<td colspan="2">Atenció quan cliqui el botó eliminar s'esborran totes les dades associades amb aquest usuari</td>
+						<td colspan="2">#{login.getMsg('txt.del.warn')}</td>
 					</tr>
 				</table>
 			</div>
 			<p>
 				<h:panelGrid columns="2">
-					<h:commandButton action="#{usuariEdicio.delete}" value="Eliminar" />
-					<h:button id="cancel" onclick="window.close();" value="Sortir" />
+					<h:commandButton action="#{usuariEdicio.delete}" value="#{login.getMsg('txt.del')}" />
+					<h:button id="cancel" onclick="window.close();" value="#{login.getMsg('txt.exit')}" />
 					<h:messages styleClass="messages" errorClass="invalid"
 						infoClass="valid" warnClass="warning" globalOnly="true" />	
 				</h:panelGrid>

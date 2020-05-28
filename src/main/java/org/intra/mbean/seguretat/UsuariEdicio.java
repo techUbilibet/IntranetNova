@@ -43,6 +43,9 @@ public class UsuariEdicio implements Serializable {
     @Inject
     private Seguretat seguretat;
 
+	@Inject
+    private Login login;
+
 	@Produces
 	@Named
 	private UsuariMD usuari;
@@ -61,41 +64,42 @@ public class UsuariEdicio implements Serializable {
     
     @PostConstruct
     public void init() {
-    	log.info("INIT");
+    	log.info("INIT"); //$NON-NLS-1$
 
-    	log.info("Funcions");
+    	log.info("Funcions"); //$NON-NLS-1$
     	llistaFuncions=new ArrayList<SelectItem>();
     	List<Funcio> funcions=seguretat.listFunctions();
-		llistaFuncions.add(new SelectItem(0,"Seleccionar"));
+		llistaFuncions.add(new SelectItem(0,login.getMsg("txt.select"))); //$NON-NLS-1$
     	for (Funcio f:funcions) {
     		llistaFuncions.add(new SelectItem(f.getId(),f.getDescripcio()));
     	}
     	llistaNivells=new ArrayList<SelectItem>();
     	for (NivellPermis n:NivellPermis.values()) {
-    		llistaNivells.add(new SelectItem(n,n.name()));
+    		String name=login.getMsg("level."+n.name());
+    		llistaNivells.add(new SelectItem(n,name));
     	}
 
     	Map<String,String> params=context.getExternalContext().getRequestParameterMap();
-    	if (params.containsKey("id")) {
-        	Integer id=new Integer(params.get("id"));
-        	log.info("Editant usuari id="+id.toString());
+    	if (params.containsKey("id")) { //$NON-NLS-1$
+        	Integer id=new Integer(params.get("id")); //$NON-NLS-1$
+        	log.info("Editant usuari id="+id.toString()); //$NON-NLS-1$
         	Usuari u=seguretat.getUsuariById(id, true); 
         	usuari=new UsuariMD(u);
         	
     	} else {
-        	log.info("Creant nou usuari");
+        	log.info("Creant nou usuari"); //$NON-NLS-1$
         	usuari=new UsuariMD();
     	}
-    	log.info("Final");
+    	log.info("Final"); //$NON-NLS-1$
     }
 
 	public void finalEdicio() {
-    	log.info("exit edicio");
+    	log.info("exit edicio"); //$NON-NLS-1$
 	}
 
     private String getRootErrorMessage(Exception e) {
         // Default to general error message that registration failed.
-        String errorMessage = "Registration failed. See server log for more information";
+        String errorMessage = login.getMsg("err.delete.log"); //$NON-NLS-1$
         if (e == null) {
             // This shouldn't happen, but return the default messages
             return errorMessage;
@@ -113,18 +117,18 @@ public class UsuariEdicio implements Serializable {
     }
 
 	public void departamentChanged(ValueChangeEvent idChanged) {
-		log.info("new " + idChanged.getNewValue().toString());
+		log.info("new " + idChanged.getNewValue().toString()); //$NON-NLS-1$
 		int nou=((Long) idChanged.getNewValue()).intValue();
 		int old=0;
 		if (idChanged.getOldValue()!=null) {
 			old=(int) idChanged.getOldValue();
-			log.info("old " + idChanged.getOldValue().toString());
+			log.info("old " + idChanged.getOldValue().toString()); //$NON-NLS-1$
 		}
 		if (old==nou) return;
 		Departament d=seguretat.getDepartamentById(nou, true);
 		
 		if (d==null) {
-        	FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Departament incorrecte, No es podran desar les dades fins que s'assigni un de correcte", "Departament incorrecte");
+        	FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, login.getMsg("err.dep.no.ext"), login.getMsg("err.dep.no")); //$NON-NLS-1$ //$NON-NLS-2$
         	context.addMessage(null, m);
         	if (old!=0)
         		d=seguretat.getDepartamentById(old);
@@ -139,14 +143,14 @@ public class UsuariEdicio implements Serializable {
 	}
 
 	public void nouPermis(ValueChangeEvent nouPermis) {
-		log.info("new " + nouPermis.getNewValue().toString());
+		log.info("new " + nouPermis.getNewValue().toString()); //$NON-NLS-1$
 		Integer id=(Integer.parseInt((String) nouPermis.getNewValue()));
 		if (id==0) return;
-		log.info("Size(1) "+Integer.toString(usuari.getPermisos().size()));
+		log.info("Size(1) "+Integer.toString(usuari.getPermisos().size())); //$NON-NLS-1$
 		for (PermisMD p:usuari.getPermisos()) {
-			log.info("permis "+p.getFuncio().getId());
+			log.info("permis "+p.getFuncio().getId()); //$NON-NLS-1$
 			if (p.getFuncio().getId().equals(id)) {
-	            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_WARN, "Aquesta funció ja està a la llista", "Funció duplicada");
+	            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_WARN, login.getMsg("err.fun.dup.ext"), login.getMsg("err.fun.dup")); //$NON-NLS-1$ //$NON-NLS-2$
 	            context.addMessage(null, m);
 	            this.novaFuncio=null;
 	            return;
@@ -156,7 +160,7 @@ public class UsuariEdicio implements Serializable {
 		Funcio f=seguretat.getFuncioById(id);
 		permis.setFuncio(new FuncioMD(f));
 		usuari.getPermisos().add(permis);
-		log.info("Size(2) "+Integer.toString(usuari.getPermisos().size()));
+		log.info("Size(2) "+Integer.toString(usuari.getPermisos().size())); //$NON-NLS-1$
 		nouPermis.setPhaseId(PhaseId.UPDATE_MODEL_VALUES);
 		novaFuncio=0;
 	}
@@ -165,25 +169,25 @@ public class UsuariEdicio implements Serializable {
         try {
         	
         	FacesMessage m; 
-        	if (!usuari.getEmail().matches("^[a-zA-Z0-9-_.]+@[a-zA-Z]+\\.[a-zA-Z]{2,}(\\.[a-zA-Z]{2,}|)")) {
-            	m = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Format email incorrecte", "Registration unsuccessful");
+        	if (!usuari.getEmail().matches("^[a-zA-Z0-9-_.]+@[a-zA-Z]+\\.[a-zA-Z]{2,}(\\.[a-zA-Z]{2,}|)")) { //$NON-NLS-1$
+            	m = new FacesMessage(FacesMessage.SEVERITY_ERROR, login.getMsg("err.email.no"), login.getMsg("err.save.no")); //$NON-NLS-1$ //$NON-NLS-2$
             	context.addMessage(null, m);
         		return;
         	}
-        	log.info("Destant Usuari");
-        	log.info("id "+usuari.getId());
-        	log.info("nom "+usuari.getNom());
-        	log.info("email "+usuari.getEmail());
-        	log.info("idioma "+usuari.getIdioma());
-        	log.info("certificat "+usuari.getCertificat());
-        	log.info("contrasenya "+usuari.getContrasenya());
-        	log.info("idDepartament "+usuari.getDepartament().getId());
+        	log.info("Destant Usuari"); //$NON-NLS-1$
+        	log.info("id "+usuari.getId()); //$NON-NLS-1$
+        	log.info("nom "+usuari.getNom()); //$NON-NLS-1$
+        	log.info("email "+usuari.getEmail()); //$NON-NLS-1$
+        	log.info("idioma "+usuari.getIdioma()); //$NON-NLS-1$
+        	log.info("certificat "+usuari.getCertificat()); //$NON-NLS-1$
+        	log.info("contrasenya "+usuari.getContrasenya()); //$NON-NLS-1$
+        	log.info("idDepartament "+usuari.getDepartament().getId()); //$NON-NLS-1$
         	usuari=seguretat.saveUsuari(usuari);
-        	m = new FacesMessage(FacesMessage.SEVERITY_INFO, "desat amb id "+usuari.getId().toString(), "Registration successful");
+        	m = new FacesMessage(FacesMessage.SEVERITY_INFO, login.getMsg("msg.save.ok.id")+usuari.getId().toString(), login.getMsg("msg.save.ok")); //$NON-NLS-1$ //$NON-NLS-2$
         	context.addMessage(null, m);
         } catch (Exception e) {
         	String errorMessage = getRootErrorMessage(e);
-        	FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "Registration unsuccessful");
+        	FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, login.getMsg("err.save.no")); //$NON-NLS-1$
         	context.addMessage(null, m);
         }
     }
@@ -191,28 +195,29 @@ public class UsuariEdicio implements Serializable {
     public String delete() throws Exception {
         try {
         	
-        	log.info("Esborrant Usuari");
-        	log.info("id "+usuari.getId());
-        	log.info("nom "+usuari.getNom());
-        	log.info("email "+usuari.getEmail());
-        	log.info("idioma "+usuari.getIdioma());
-        	log.info("certificat "+usuari.getCertificat());
-        	log.info("contrasenya "+usuari.getContrasenya());
-        	log.info("idDepartament "+usuari.getDepartament().getId());
+        	log.info("Esborrant Usuari"); //$NON-NLS-1$
+        	log.info("id "+usuari.getId()); //$NON-NLS-1$
+        	log.info("nom "+usuari.getNom()); //$NON-NLS-1$
+        	log.info("email "+usuari.getEmail()); //$NON-NLS-1$
+        	log.info("idioma "+usuari.getIdioma()); //$NON-NLS-1$
+        	log.info("certificat "+usuari.getCertificat()); //$NON-NLS-1$
+        	log.info("contrasenya "+usuari.getContrasenya()); //$NON-NLS-1$
+        	log.info("idDepartament "+usuari.getDepartament().getId()); //$NON-NLS-1$
+        	String id=usuari.getId().toString();
         	seguretat.eliminarUsuari(usuari);
-        	FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, "esborrat", "Deletion successful");
+        	FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, login.getMsg("msg.deleted.id")+id, login.getMsg("msg.deleted")); //$NON-NLS-1$ //$NON-NLS-2$
         	context.addMessage(null, m);
         } catch (Exception e) {
         	String errorMessage = getRootErrorMessage(e);
-        	FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "Deletion unsuccessful");
+        	FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, login.getMsg("err.delete.no")); //$NON-NLS-1$
         	context.addMessage(null, m);
-        	return "";
+        	return ""; //$NON-NLS-1$
         }
-        return "window.close()";
+        return "window.close()"; //$NON-NLS-1$
     }
 
     public void exit() {
-    	log.info("cancel");
+    	log.info("cancel"); //$NON-NLS-1$
     }
 
 }

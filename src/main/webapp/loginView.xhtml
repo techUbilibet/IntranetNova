@@ -9,13 +9,13 @@
 		<h:form>
 			<h:panelGrid columns="2" rendered="#{!login.loggedIn}">
 				<f:validateBean>
-					<h:outputLabel for="username">User:</h:outputLabel>
+					<h:outputLabel for="username">#{login.getMsg('txt.user')}:</h:outputLabel>
 					<h:inputText id="username" value="#{credencials.email}" />
-					<h:outputLabel for="contrasenya">Password:</h:outputLabel>
+					<h:outputLabel for="contrasenya">#{login.getMsg('txt.psw')}:</h:outputLabel>
 					<h:inputSecret id="contrasenya" value="#{credencials.contrasenya}" />
 				</f:validateBean>
 			</h:panelGrid>
-			<h:commandButton value="Login" action="#{login.login}"/>
+			<h:commandButton value="Login" action="#{login.login}" image="resources/gfx/inside32.png" />
 		</h:form>
 	</ui:define>
 </ui:composition>

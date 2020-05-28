@@ -9,18 +9,18 @@
 		<h:outputScript library="js" name="tabpane.js" target="body" />
 		<script type="javascript">var tabPane1 = new WebFXTabPane( document.getElementById( "tab-pane-1" ) );</script>
 		<h:form id="reg">
-			<h2>Edició d'usuari</h2>
+			<h2>#{login.getMsg('txt.user.ed')}</h2>
 			<div class="tab-pane" id="tab-pane-1" style="width: 100%;">
 				<div class="tab-page" style="width: 94%;">
-					<h2 class="tab">Dades</h2>
+					<h2 class="tab">#{login.getMsg('txt.data')}</h2>
 					<table>
 						<tr>
-							<td><h:outputLabel for="id" value="Id:" /></td>
+							<td><h:outputLabel for="id" value="#{login.getMsg('txt.id')}:" /></td>
 							<td><h:inputText id="id" value="#{usuari.id}"
 									readonly="true" size="5" tabindex="-1" /></td>
 						</tr>
 						<tr>
-							<td><h:outputLabel for="idDepartament" value="Departament:" /></td>
+							<td><h:outputLabel for="idDepartament" value="#{login.getMsg('txt.dept')}:" /></td>
 							<td><h:inputText id="idDepartament"
 									value="#{usuari.departament.id}" size="5" maxlength="10"
 									valueChangeListener="#{usuariEdicio.departamentChanged}"
@@ -33,28 +33,28 @@
 								<!--h:commandButton type="button" id="selectDepartament" onclick="DepartamentSeleccio()" value="Sel" /--></td>
 						</tr>
 						<tr>
-							<td><h:outputLabel for="nom" value="Name:" /></td>
+							<td><h:outputLabel for="nom" value="#{login.getMsg('txt.name')}:" /></td>
 							<td><h:inputText id="nom" value="#{usuari.nom}" required="true" size="30" maxlength="50" /></td>
 						</tr>
 						<tr>
-							<td><h:outputLabel for="email" value="Email:" /></td>
+							<td><h:outputLabel for="email" value="#{login.getMsg('txt.email')}:" /></td>
 							<td><h:inputText id="email" value="#{usuari.email}" required="true" size="30" maxlength="50" /></td>
 						</tr>
 						<tr>
 							<td><h:outputLabel for="certificat"
-									value="Identificació amb certificat:" /></td>
+									value="#{login.getMsg('txt.ssllogin')}:" /></td>
 							<td><h:selectBooleanCheckbox value="#{usuari.certificat}" /></td>
 						</tr>
 						<tr>
-							<td><h:outputLabel for="idioma" value="Idioma:" /></td>
+							<td><h:outputLabel for="idioma" value="#{login.getMsg('txt.lang')}:" /></td>
 							<td><h:selectOneListbox id="idioma" value="#{usuari.idioma}" size="1" tabindex="0">
-									<f:selectItem itemValue="0" itemLabel="Català" />
-									<f:selectItem itemValue="1" itemLabel="Castellà" />
-									<f:selectItem itemValue="2" itemLabel="Anglès" />
+									<f:selectItem itemValue="0" itemLabel="#{login.getMsg('lang.CAT')}" />
+									<f:selectItem itemValue="1" itemLabel="#{login.getMsg('lang.ES')}" />
+									<f:selectItem itemValue="2" itemLabel="#{login.getMsg('lang.EN')}" />
 								</h:selectOneListbox></td>
 						</tr>
 						<tr>
-							<td><h:outputLabel for="contrasenya" value="Contrasenya:" />
+							<td><h:outputLabel for="contrasenya" value="#{login.getMsg('txt.psw')}:" />
 							</td>
 							<td><h:inputText id="contrasenya"
 									value="#{usuari.contrasenya}" size="30" maxlength="50" /></td>
@@ -62,16 +62,16 @@
 					</table>
 				</div>
 				<div class="tab-page" style="width: 94%;">
-					<h2 class="tab">Permisos</h2>
+					<h2 class="tab">#{login.getMsg('txt.rights')}</h2>
 					<h:dataTable var="_permis" value="#{usuari.permisos}"
 						rendered="#{not empty usuari.permisos}"
 						styleClass="simpletablestyle">
 						<h:column>
-							<f:facet name="header">Funció</f:facet>
+							<f:facet name="header">#{login.getMsg('txt.func')}</f:facet>
 			                #{_permis.funcio.descripcio}
 						</h:column>
 						<h:column >
-							<f:facet name="header">Nivell</f:facet>
+							<f:facet name="header">#{login.getMsg('txt.level')}</f:facet>
 							<h:selectOneListbox id="nivell" value="#{_permis.nivell}" rendered="#{login.usuari.tePermis(2,'MODIFICAR')}" 
 								size="1" tabindex="0">
 								<f:selectItems value="#{llistaNivells}" />
@@ -79,16 +79,16 @@
 							<h:outputText value="#{_permis.nivell.name()}" rendered="#{!(login.usuari.tePermis(2,'MODIFICAR'))}" />
 						</h:column>
 						<h:column>
-							<f:facet name="header">Amb contrasenya</f:facet>
+							<f:facet name="header">#{login.getMsg('txt.needpsw')}</f:facet>
 							<h:selectBooleanCheckbox value="#{_permis.contrasenya}" readonly="#{!(login.usuari.tePermis(2,'MODIFICAR'))}" />
 						</h:column>
 						<h:column>
-							<f:facet name="header">Eliminar</f:facet>
+							<f:facet name="header">#{login.getMsg('txt.del')}</f:facet>
 							<h:selectBooleanCheckbox value="#{_permis.delete}" readonly="#{!(login.usuari.tePermis(2,'MODIFICAR'))}" />
 						</h:column>
 					</h:dataTable>
 					<h:panelGrid columns="2" rendered="#{login.usuari.tePermis(2,'MODIFICAR')}">
-						<h:outputLabel for="addPermis" value="Nou permís:" />
+						<h:outputLabel for="addPermis" value="#{login.getMsg('txt.new')}#{login.getMsg('txt.right')}:" />
 						<h:selectOneListbox id="addPermis" value="#{novaFuncio}" size="1"
 							valueChangeListener="#{usuariEdicio.nouPermis}"
 							onchange="submit()">
@@ -99,9 +99,9 @@
 			</div>
 			<p>
 				<h:panelGrid columns="2">
-					<h:commandButton action="#{usuariEdicio.save}" value="Desar" rendered="#{login.usuari.tePermis(2,'MODIFICAR')}" />
+					<h:commandButton action="#{usuariEdicio.save}" value="#{login.getMsg('txt.save')}" rendered="#{login.usuari.tePermis(2,'MODIFICAR')}" />
 					<h:button onclick="NotAllowed()" value="Desar" rendered="#{!(login.usuari.tePermis(2,'MODIFICAR'))}" />
-					<h:button id="cancel" onclick="window.close();" value="Sortir" />
+					<h:button id="cancel" onclick="window.close();" value="#{login.getMsg('txt.exit')}" />
 					<h:messages styleClass="messages" errorClass="invalid"
 						infoClass="valid" warnClass="warning" globalOnly="true" />
 				</h:panelGrid>

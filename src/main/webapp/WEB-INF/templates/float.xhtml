@@ -15,7 +15,7 @@
     	<h1>Ubilibet Intranet 2.0</h1>
     	<h:form>
             <h:panelGrid columns="2">
-				<h:outputLabel for="username">usuari:</h:outputLabel>
+				<h:outputLabel for="username">#{login.getMsg('txt.user')}:</h:outputLabel>
 				<h:inputText id="nouser" value="#{login.usuari.nom}"  rendered="#{login.loggedIn}" readonly="true" />
 				<h:inputText id="username" value="Ningú"  rendered="#{!login.loggedIn}" readonly="true" />
 			</h:panelGrid>

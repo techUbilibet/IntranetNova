@@ -32,7 +32,7 @@ body {
   border-right: 5px solid #8c8f91;
   border-bottom: 25px solid #8c8f91;
   width: 865px; */
-  background: #015A84;
+  background: #8296A9/*#015A84*/;
 /*  background-image: url(#{request.contextPath}/resources/gfx/headerbkg.png);
   background-repeat: repeat-x;
   padding-top: 30px;

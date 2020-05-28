@@ -6,21 +6,21 @@
     template="/WEB-INF/templates/default.xhtml">
     <ui:define name="content">
 	    <div>
-	        <h2>Usuaris</h2>
-	        <!--h:panelGroup rendered="#{empty usuaris}">
-	            <em>Sense usuaris.</em>
-	        </h:panelGroup-->
+	        <h2>#{login.getMsg('txt.users')}</h2>
             <h:panelGrid columns="2">
-               <h:button onclick="UsuariEditor()" value="Nou usuari" styleClass="register" />
-               <h:button outcome="index.jsf" value="Sortir" styleClass="register" />
+               <h:button onclick="UsuariEditor()" value="#{login.getMsg('txt.new')}#{login.getMsg('txt.user')}" styleClass="register" />
+               <h:button outcome="index.jsf" value="#{login.getMsg('txt.exit')}" styleClass="register" />
             	<!--;-->
             </h:panelGrid>
+	        <h:panelGroup rendered="#{empty usuaris}">
+	            <em>#{login.getMsg('txt.wo')}#{login.getMsg('txt.users')}</em>
+	        </h:panelGroup>
 	        <h:dataTable var="_usuari" value="#{llistaUsuaris}"
 	            rendered="#{not empty llistaUsuaris}"
 	            styleClass="simpletablestyle">
 	            <h:column>
 	                <f:facet name="header">
-	                	<h:link value="Id" onclick="usuarisView.jsf" >
+	                	<h:link value="#{login.getMsg('txt.id')}" onclick="usuarisView.jsf" >
 	                		<f:param name="order" value="id" />
 	                	</h:link>
 	                </f:facet>
@@ -29,7 +29,7 @@
 	            </h:column>
 	            <h:column>
 	                <f:facet name="header">
-	                	<h:link value="Nom" onclick="usuarisView.jsf" >
+	                	<h:link value="#{login.getMsg('txt.name')}" onclick="usuarisView.jsf" >
 	                		<f:param name="order" value="nom" />
 	                	</h:link>
 	                	
@@ -38,7 +38,7 @@
 	            </h:column>
 	            <h:column>
 	                <f:facet name="header">
-	                	<h:link value="Email" onclick="usuarisView.jsf" >
+	                	<h:link value="#{login.getMsg('txt.email')}" onclick="usuarisView.jsf" >
 	                		<f:param name="order" value="email" />
 	                	</h:link>
 	                	
@@ -46,12 +46,12 @@
 	                #{_usuari.email}
 	            </h:column>
 	            <h:column>
-	                <f:facet name="header">Departament</f:facet>
+	                <f:facet name="header">#{login.getMsg('txt.dept')}</f:facet>
 	                #{_usuari.departament.nom}
 	            </h:column>
 	            <h:column>
 	                <!--f:facet name="header">Operacions</f:facet-->
-	                <h:button value="Eliminar" onclick="UsuariDelete(#{_usuari.id})" image="resources/gfx/erase32.png" />
+	                <h:button value="#{login.getMsg('txt.del')}" onclick="UsuariDelete(#{_usuari.id})" image="resources/gfx/erase32.png" />
 	            </h:column>
 	        </h:dataTable>
 		</div>

@@ -1,6 +1,9 @@
 package org.intra.mbean.seguretat;
 
 import java.io.Serializable;
+import java.util.Locale;
+import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -11,6 +14,7 @@ import javax.inject.Named;
 
 import org.intra.integracio.Usuari;
 import org.intra.model.Credencials;
+import org.intra.model.Idioma;
 import org.intra.model.NivellPermis;
 import org.intra.model.PermisMD;
 import org.intra.model.UsuariMD;
@@ -29,6 +33,9 @@ public class Login implements Serializable {
 	Credencials credencials;
 
 	@Inject
+    private Logger log;
+
+	@Inject
     private FacesContext context;
 
     @Inject
@@ -36,26 +43,42 @@ public class Login implements Serializable {
 
 	private UsuariMD usuari;
 
-    @PostConstruct
+	private ResourceBundle msg;
+	
+	@PostConstruct
     public void init() {
         usuari = null;
+        setIdioma();
+        
     }
-    
+
+	private void setIdioma() {
+		Idioma idm;
+		if (usuari==null) idm=Idioma.EN;
+		else idm=Idioma.values()[usuari.getIdioma()];
+		msg=ResourceBundle.getBundle("org.intra.util.messages_"+idm.name().toLowerCase());
+	}
 	
 	public String login() {
 		Usuari u=seguretat.getUsuariByEmail(credencials.getEmail());
+		if (u==null) {
+			usuari=null;
+			return "loginView.jsf";
+		}
 		usuari=new UsuariMD(u);
 		if (usuari==null || !usuari.getContrasenya().equals(credencials.getContrasenya())) {
 			usuari=null;
 			return "loginView.jsf";
 		}
+        setIdioma();
 		return "index.jsf";
 	}
 
 	public void logout() {
 		usuari = null;
 //		context.getViewRoot().getViewMap().clear();
-		context.getExternalContext().invalidateSession();
+//		context.getExternalContext().invalidateSession();
+        setIdioma();
 	}
 
 	public boolean isLoggedIn() {
@@ -75,6 +98,10 @@ public class Login implements Serializable {
 	@LoggedIn
 	UsuariMD getCurrentUser() {
 		return usuari;
+	}
+
+	public String getMsg(String key) {
+		return msg.getString(key);
 	}
 	
 }
