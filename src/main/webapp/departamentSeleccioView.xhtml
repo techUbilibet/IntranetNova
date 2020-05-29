@@ -6,23 +6,24 @@
 	template="/WEB-INF/templates/float.xhtml">
 	<ui:define name="content">
 		<div>
-			<h2>Departaments</h2>
+			<h2>Selecció de Departament</h2>
 			<h:form>
 			<h:panelGrid columns="2">
 				<h:outputLabel for="nomDepartament" value="Nom:" />
-				<h:inputText id="nomDepartament" value="#{param.nom}" size="40" />
-				<h:commandButton type="submit" action="#{departamentSeleccio.cercar}" value="cercar" />
+				<h:inputText id="nomDepartament" value="#{nom}" size="50" />
+				<h:commandButton type="submit" value="cercar" 
+					action="#{departamentSeleccio.cercar}" />
 		
-				<h:button onclick="window.close();" value="Sortir" styleClass="register" />
+				<h:button value="Sortir" styleClass="register"
+					onclick="window.close()" />
 			</h:panelGrid>
 				<h:dataTable var="_departament" value="#{llistaSelDepartament}"
 					rendered="#{not empty departaments}" styleClass="simpletablestyle">
 					<h:column>
 						<f:facet name="header">Id</f:facet>
-						<!--h:commandLink value="#{_departament.id}"
-							action="#{departamentSeleccio.return(_departament.id)}">
-							<f:param name="id" value="#{_departament.id}" />
-						</h:commandLink-->
+						<h:commandLink value="#{_departament.id}"
+							action="#{departamentSeleccio.select(_departament.id)}" 
+							onclick="window.close()"/>
 					</h:column>
 					<h:column>
 						<f:facet name="header">Nom</f:facet>

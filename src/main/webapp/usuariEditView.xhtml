@@ -17,7 +17,8 @@
 						<tr>
 							<td><h:outputLabel for="id" value="#{login.getMsg('txt.id')}:" /></td>
 							<td><h:inputText id="id" value="#{usuari.id}"
-									readonly="true" size="5" tabindex="-1" /></td>
+									readonly="true" size="5" tabindex="-1" />
+								</td>
 						</tr>
 						<tr>
 							<td><h:outputLabel for="idDepartament" value="#{login.getMsg('txt.dept')}:" /></td>
@@ -27,10 +28,10 @@
 									onchange="submit()" readonly="#{!(login.usuari.tePermis(2,'MODIFICAR'))}" >
 									<f:convertNumber integerOnly="true" />
 								</h:inputText>
+								
 								<h:inputText id="nomDepartament"
 									value="#{usuari.departament.nom}" size="40" readonly="true"
-									tabindex="-1" />
-								<!--h:commandButton type="button" id="selectDepartament" onclick="DepartamentSeleccio()" value="Sel" /--></td>
+									tabindex="-1" /></td>
 						</tr>
 						<tr>
 							<td><h:outputLabel for="nom" value="#{login.getMsg('txt.name')}:" /></td>
@@ -102,8 +103,10 @@
 					<h:commandButton action="#{usuariEdicio.save}" value="#{login.getMsg('txt.save')}" rendered="#{login.usuari.tePermis(2,'MODIFICAR')}" />
 					<h:button onclick="NotAllowed()" value="Desar" rendered="#{!(login.usuari.tePermis(2,'MODIFICAR'))}" />
 					<h:button id="cancel" onclick="window.close();" value="#{login.getMsg('txt.exit')}" />
+				</h:panelGrid>
+				<h:panelGrid columns="1">
 					<h:messages styleClass="messages" errorClass="invalid"
-						infoClass="valid" warnClass="warning" globalOnly="true" />
+						infoClass="valid" warnClass="warning" globalOnly="false" />
 				</h:panelGrid>
 			</p>
 		</h:form>

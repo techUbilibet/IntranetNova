@@ -6,19 +6,15 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Model;
 import javax.enterprise.inject.Produces;
-import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.intra.integracio.Departament;
-import org.intra.model.Parametres;
 import org.intra.negoci.Seguretat;
 
-@Named
-@ViewScoped
+@Model
 public class DepartamentSeleccio implements Serializable {
 
     /**
@@ -32,24 +28,17 @@ public class DepartamentSeleccio implements Serializable {
 	@Inject
     private Logger log;
 
-	@Inject
-    private Parametres param;
+	@Produces
+    @Named
+    private String nom;
 	
-//    public String getNomDepartament() {
-//    	log.info("get nom");
-//		return nomDepartament;
-//	}
-//
-//	public void setNomDepartament(String nomDepartament) {
-//    	log.info("set nom");
-//		this.nomDepartament = nomDepartament;
-//	}
+    private Integer selected;
 
 	@Produces
     @Named
     private List<Departament> llistaSelDepartament;
-    
-    @PostConstruct
+	
+	@PostConstruct
     public void init() {
     	try {
 			cercar();
@@ -61,6 +50,19 @@ public class DepartamentSeleccio implements Serializable {
     
     public void cercar() throws Exception {
     	log.info("Cercar");
-    	llistaSelDepartament = seguretat.listDepartamentsNom(param.getNom());
+    	llistaSelDepartament = seguretat.listDepartamentsNom(nom);
     }
+    
+    public void select(Integer id) {
+    	setSelected(id);
+    }
+
+	public Integer getSelected() {
+		return selected;
+	}
+
+	public void setSelected(Integer selected) {
+		this.selected = selected;
+	}
+
 }

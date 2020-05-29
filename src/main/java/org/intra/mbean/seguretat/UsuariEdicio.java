@@ -11,6 +11,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
@@ -45,7 +46,7 @@ public class UsuariEdicio implements Serializable {
 
 	@Inject
     private Login login;
-
+	
 	@Produces
 	@Named
 	private UsuariMD usuari;
@@ -117,31 +118,27 @@ public class UsuariEdicio implements Serializable {
     }
 
 	public void departamentChanged(ValueChangeEvent idChanged) {
-		log.info("new " + idChanged.getNewValue().toString()); //$NON-NLS-1$
+		log.info("new id " + idChanged.getNewValue().toString()); //$NON-NLS-1$
 		int nou=((Long) idChanged.getNewValue()).intValue();
 		int old=0;
 		if (idChanged.getOldValue()!=null) {
 			old=(int) idChanged.getOldValue();
-			log.info("old " + idChanged.getOldValue().toString()); //$NON-NLS-1$
+			log.info("old id" + idChanged.getOldValue().toString()); //$NON-NLS-1$
 		}
 		if (old==nou) return;
-		Departament d=seguretat.getDepartamentById(nou, true);
+
+    	Departament d=seguretat.getDepartamentById(nou, true);
 		
 		if (d==null) {
         	FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, login.getMsg("err.dep.no.ext"), login.getMsg("err.dep.no")); //$NON-NLS-1$ //$NON-NLS-2$
         	context.addMessage(null, m);
-        	if (old!=0)
-        		d=seguretat.getDepartamentById(old);
-		}
-		if (d!=null) {
+			usuari.setDepartament(new DepartamentMD());
+		} else {
 			usuari.setDepartament(new DepartamentMD(d));
 			usuari.resetPermisos();
-		} else { 
-			usuari.setDepartament(new DepartamentMD());
 		}
-    	idChanged.setPhaseId(PhaseId.UPDATE_MODEL_VALUES);
 	}
-
+	
 	public void nouPermis(ValueChangeEvent nouPermis) {
 		log.info("new " + nouPermis.getNewValue().toString()); //$NON-NLS-1$
 		Integer id=(Integer.parseInt((String) nouPermis.getNewValue()));
@@ -168,19 +165,34 @@ public class UsuariEdicio implements Serializable {
     public void save() throws Exception {
         try {
         	if (!login.isLoggedIn()) return;
+        	boolean doit=true;
         	FacesMessage m; 
         	if (!usuari.getEmail().matches("^[a-zA-Z0-9-_.]+@[a-zA-Z]+\\.[a-zA-Z]{2,}(\\.[a-zA-Z]{2,}|)")) { //$NON-NLS-1$
             	m = new FacesMessage(FacesMessage.SEVERITY_ERROR, login.getMsg("err.email.no"), login.getMsg("err.save.no")); //$NON-NLS-1$ //$NON-NLS-2$
-            	context.addMessage(null, m);
-        		return;
+            	context.addMessage("save", m);
+        		doit=false;
+        	}
+        	if (usuari.getDepartament().getId()!=null) {
+        		if (seguretat.getDepartamentById(usuari.getDepartament().getId())==null) {
+                	m = new FacesMessage(FacesMessage.SEVERITY_ERROR, login.getMsg("err.dep.no.ext"), login.getMsg("err.save.no")); //$NON-NLS-1$ //$NON-NLS-2$
+                	context.addMessage("save", m);
+        			doit=false;
+        		}
+        	} else {
+        		
         	}
         	if (usuari.getNovaContrasenya()!=null && !usuari.getNovaContrasenya().isEmpty()) {
         		if (!usuari.getNovaContrasenya().matches("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{10,50}")) {
                 	m = new FacesMessage(FacesMessage.SEVERITY_ERROR, login.getMsg("err.psw.no"), login.getMsg("err.save.no")); //$NON-NLS-1$ //$NON-NLS-2$
-                	context.addMessage(null, m);
+                	context.addMessage("save", m);
+                	doit=false;
         		} else 
-        			usuari.setContrasenya();
+        			if (doit) usuari.setContrasenya();
         	}
+        	if (!doit) {
+        		return;
+        	}
+        	
         	log.info("Destant Usuari"); //$NON-NLS-1$
         	log.info("id "+usuari.getId()); //$NON-NLS-1$
         	log.info("nom "+usuari.getNom()); //$NON-NLS-1$
@@ -191,11 +203,11 @@ public class UsuariEdicio implements Serializable {
         	log.info("contrasenya "+usuari.getContrasenya()); //$NON-NLS-1$
         	usuari=seguretat.saveUsuari(usuari);
         	m = new FacesMessage(FacesMessage.SEVERITY_INFO, login.getMsg("msg.save.ok.id")+usuari.getId().toString(), login.getMsg("msg.save.ok")); //$NON-NLS-1$ //$NON-NLS-2$
-        	context.addMessage(null, m);
+        	context.addMessage("save", m);
         } catch (Exception e) {
         	String errorMessage = getRootErrorMessage(e);
         	FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, login.getMsg("err.save.no")); //$NON-NLS-1$
-        	context.addMessage(null, m);
+        	context.addMessage("save", m);
         }
     }
     
@@ -206,11 +218,11 @@ public class UsuariEdicio implements Serializable {
         	String id=usuari.getId().toString();
         	seguretat.eliminarUsuari(usuari);
         	FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, login.getMsg("msg.deleted.id")+id, login.getMsg("msg.deleted")); //$NON-NLS-1$ //$NON-NLS-2$
-        	context.addMessage(null, m);
+        	context.addMessage("delete", m);
         } catch (Exception e) {
         	String errorMessage = getRootErrorMessage(e);
         	FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, login.getMsg("err.delete.no")); //$NON-NLS-1$
-        	context.addMessage(null, m);
+        	context.addMessage("delete", m);
         	return ""; //$NON-NLS-1$
         }
         return "window.close()"; //$NON-NLS-1$
